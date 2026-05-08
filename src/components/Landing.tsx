@@ -75,9 +75,8 @@ export function Landing({ onStart, onBrowse }: Props) {
           <p className="text-ink/70 text-[1.0625rem] leading-[1.65] max-w-[36rem] mt-8 mb-9">
             Answer a few questions about your ancestors and we'll show which
             citizenship paths look realistic, across descent, heritage,
-            marriage, and ancestry-visa routes. Nineteen countries, plus
-            Israel's Law of Return and Germany's Article 116. Your answers stay
-            in your browser; nothing is ever sent to a server.
+            marriage, and ancestry-visa routes. Your answers stay in your
+            browser; nothing is ever sent to a server.
           </p>
 
           <div className="flex flex-wrap gap-3.5 mb-10">
