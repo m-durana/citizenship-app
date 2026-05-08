@@ -256,6 +256,11 @@ function HeritageStep({
         checked={h.armenianGenocideDescendant === true}
         onChange={(v) => setH({ armenianGenocideDescendant: v })}
       />
+      <Toggle
+        label="I'm a member of the African diaspora and could document maternal/paternal lineage to West Africa via DNA (relevant for Sierra Leone's heritage route)."
+        checked={h.africanDiasporaDescendant === true}
+        onChange={(v) => setH({ africanDiasporaDescendant: v })}
+      />
     </div>
   );
 }

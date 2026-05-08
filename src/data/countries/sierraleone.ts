@@ -10,7 +10,14 @@ export const sierraLeoneDNAHeritage: Path = {
   shortDescription:
     "Sierra Leone's diaspora DNA-heritage pathway (administrative under the 1973 Citizenship Act, 2006 'negro African descent' definition, and 2017 amendments) lets African-diaspora applicants whose maternal or paternal lineage traces to Sierra Leone obtain citizenship via DNA test, certified tour, and a conferment ceremony.",
   evaluate: (p) => {
-    void p;
+    if (p.heritage.africanDiasporaDescendant !== true) {
+      return {
+        tier: "unlikely",
+        reasons: [
+          "This route is restricted to African-diaspora applicants who can document maternal or paternal lineage to Sierra Leone via DNA testing.",
+        ],
+      };
+    }
     return {
       tier: "possibly",
       reasons: [

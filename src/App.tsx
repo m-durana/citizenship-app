@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Landing } from "./components/Landing";
 import { Wizard } from "./components/Wizard";
 import { Results } from "./components/Results";
+import { Browse } from "./components/Browse";
 import { useProfileState } from "./state/useProfileState";
 
-type Screen = "landing" | "wizard" | "results";
+type Screen = "landing" | "wizard" | "results" | "browse";
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("landing");
@@ -12,7 +13,13 @@ export default function App() {
 
   return (
     <>
-      {screen === "landing" && <Landing onStart={() => setScreen("wizard")} />}
+      {screen === "landing" && (
+        <Landing
+          onStart={() => setScreen("wizard")}
+          onBrowse={() => setScreen("browse")}
+        />
+      )}
+      {screen === "browse" && <Browse onBack={() => setScreen("landing")} />}
       {screen === "wizard" && (
         <Wizard
           profile={profile}

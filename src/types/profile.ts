@@ -40,6 +40,7 @@ export type Heritage = {
   naziPersecutionDescendant?: Tribool;
   spanishCivilWarExileDescendant?: Tribool;
   armenianGenocideDescendant?: Tribool;
+  africanDiasporaDescendant?: Tribool;
 };
 
 export type Self = {
