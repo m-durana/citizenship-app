@@ -99,14 +99,14 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
         {step < last ? (
           <button
             onClick={() => setStep((s) => Math.min(last, s + 1))}
-            className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium bg-accent text-white px-6 py-3 transition hover:brightness-105"
+            className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-accent bg-accent text-white px-6 py-3 transition hover:bg-transparent hover:text-accent"
           >
             Next →
           </button>
         ) : (
           <button
             onClick={onSubmit}
-            className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium bg-likely text-bg px-6 py-3 transition hover:brightness-105"
+            className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-likely bg-likely text-bg px-6 py-3 transition hover:bg-transparent hover:text-likely"
           >
             See my matches →
           </button>

@@ -82,13 +82,13 @@ export function Landing({ onStart, onBrowse }: Props) {
           <div className="flex flex-wrap gap-3.5 mb-10">
             <button
               onClick={onStart}
-              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium bg-accent text-white px-7 py-4 transition hover:brightness-105"
+              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-accent bg-accent text-white px-7 py-4 transition hover:bg-transparent hover:text-accent"
             >
               Begin questionnaire
             </button>
             <button
               onClick={onBrowse}
-              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-white/10 text-ink px-6 py-4 transition hover:border-accent hover:text-accent"
+              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-white/10 bg-transparent text-ink px-6 py-4 transition hover:bg-accent hover:border-accent hover:text-white"
             >
               Browse all rules
             </button>
