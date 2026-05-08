@@ -74,6 +74,6 @@ export const hungaryDescent: Path = {
       required: false,
       note: "Brief cultural questions during the interview, not a formal civics exam.",
     },
-    singleSource: true,
+    singleSource: "government",
   },
 };

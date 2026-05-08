@@ -6,7 +6,7 @@ function PassportBackdrop() {
   return (
     <svg
       viewBox="0 0 200 260"
-      className="absolute left-[8%] top-12 md:left-[14%] md:top-20 w-[18rem] md:w-[24rem] h-auto opacity-[0.06] pointer-events-none select-none"
+      className="absolute left-[4%] top-12 md:left-[9%] md:top-20 w-[18rem] md:w-[24rem] h-auto opacity-[0.06] pointer-events-none select-none"
       aria-hidden="true"
     >
       <defs>

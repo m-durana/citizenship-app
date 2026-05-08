@@ -1,6 +1,7 @@
 import type { Ancestor, AncestorKey, UserProfile } from "../types/profile";
 import { ANCESTOR_LABELS } from "../types/profile";
-import { COUNTRIES } from "../data/countries";
+import { COUNTRY_BY_CODE } from "../data/countries";
+import { CountrySelect } from "./CountrySelect";
 
 type Props = {
   profile: UserProfile;
@@ -56,7 +57,7 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
         <h3 className="font-medium">{ANCESTOR_LABELS[keyName]}</h3>
         {a.birthCountry && (
           <span className="text-xs text-muted">
-            {COUNTRIES.find((c) => c.code === a.birthCountry)?.flag}{" "}
+            {COUNTRY_BY_CODE[a.birthCountry]?.flag}{" "}
             {a.birthCountry}
           </span>
         )}
@@ -65,18 +66,13 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <label className="block text-sm">
           <span className="text-muted">Country of birth</span>
-          <select
+          <CountrySelect
+            mode="single"
             value={a.birthCountry ?? ""}
-            onChange={(e) => update({ birthCountry: e.target.value || undefined })}
-            className="mt-1 w-full rounded-md bg-bg border border-border px-2 py-1.5 text-sm"
-          >
-            <option value="">- Unknown -</option>
-            {COUNTRIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.flag} {c.name}
-              </option>
-            ))}
-          </select>
+            placeholder="- Unknown -"
+            onChange={(code) => update({ birthCountry: code || undefined })}
+            className="mt-1"
+          />
         </label>
 
         <label className="block text-sm">

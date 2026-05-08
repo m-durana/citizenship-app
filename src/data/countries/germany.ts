@@ -133,6 +133,6 @@ export const germanyArticle116: Path = {
     lawyerTypicallyNeeded: "optional",
     languageTest: { required: false },
     knowledgeTest: { required: false, note: "Free legal help available via the Article 116 Reconciliation Project." },
-    singleSource: true,
+    singleSource: "government",
   },
 };

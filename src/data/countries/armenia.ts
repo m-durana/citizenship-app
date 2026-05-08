@@ -75,6 +75,6 @@ export const armeniaDescent: Path = {
     lawyerTypicallyNeeded: "optional",
     languageTest: { required: false },
     knowledgeTest: { required: false },
-    singleSource: true,
+    singleSource: "government",
   },
 };

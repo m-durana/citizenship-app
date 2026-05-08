@@ -4,6 +4,7 @@ import { LAST_UPDATED } from "../engine/lastUpdated";
 import type { EvaluatedPath, Tier } from "../types/path";
 import { TIER_LABEL } from "../types/path";
 import type { UserProfile } from "../types/profile";
+import { isEU } from "../data/countries";
 
 type Props = {
   profile: UserProfile;
@@ -132,12 +133,20 @@ function PathCard({ path, tier }: { path: EvaluatedPath; tier: Tier }) {
     <div className={`rounded-lg border p-5 ${TIER_COLOR[tier]}`}>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="text-2xl">{path.flag}</span>
             <h3 className="font-semibold">{path.country}</h3>
             <span className="text-xs px-1.5 py-0.5 rounded bg-border/50 text-muted">
               {path.pathType}
             </span>
+            {isEU(path.countryCode) && (
+              <span
+                className="text-xs px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/30"
+                title="EU member state - grants freedom of movement, work, and residence across all 27 EU countries."
+              >
+                EU
+              </span>
+            )}
           </div>
           <p className="text-sm text-ink/90">{path.name}</p>
         </div>
@@ -207,13 +216,22 @@ function PathCard({ path, tier }: { path: EvaluatedPath; tier: Tier }) {
                     {path.practical.successSignal}
                   </span>
                   {path.practical.successNote ? ` (${path.practical.successNote})` : ""}.
-                  {path.practical.singleSource && (
+                  {path.practical.singleSource === "government" && (
                     <span
-                      title="One or more figures here rest on a single source. Verify before relying on it."
+                      title="One or more figures here rest on a single official-government source."
+                      className="ml-1 text-emerald-500"
+                      aria-label="Single-source claim from an official government source"
+                    >
+                      ⚠
+                    </span>
+                  )}
+                  {path.practical.singleSource === "secondary" && (
+                    <span
+                      title="One or more figures here rest on a single non-government source. Verify before relying on it."
                       className="ml-1 text-amber-500"
                       aria-label="Single-source claim - verify before relying on it"
                     >
-                      ⚠️
+                      ⚠
                     </span>
                   )}
                 </li>

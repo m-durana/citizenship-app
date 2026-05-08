@@ -89,6 +89,6 @@ export const slovakiaDescent: Path = {
       note: "No formal language test for descent; basic Slovak may be checked at interview. Naturalization-by-residency uses a separate language requirement.",
     },
     knowledgeTest: { required: false },
-    singleSource: true,
+    singleSource: "secondary",
   },
 };

@@ -91,6 +91,6 @@ export const ukAncestryVisa: Path = {
       required: true,
       note: "Life in the UK Test required at the ILR / naturalization stages.",
     },
-    singleSource: true,
+    singleSource: "government",
   },
 };

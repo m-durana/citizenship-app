@@ -5,8 +5,8 @@ import {
   GREAT_GRANDPARENT_KEYS,
   PARENT_KEYS,
 } from "../types/profile";
-import { COUNTRIES } from "../data/countries";
 import { AncestorCard } from "./AncestorCard";
+import { CountrySelect } from "./CountrySelect";
 
 type Props = {
   profile: UserProfile;
@@ -123,28 +123,19 @@ function AboutYouStep({
     <>
       <label className="block">
         <span className="text-muted text-sm">
-          Your current citizenship(s) - pick one
+          Your current citizenship(s) - add all that apply
         </span>
-        <select
-          value={self.currentCitizenships[0] ?? ""}
-          onChange={(e) =>
+        <CountrySelect
+          mode="multi"
+          value={self.currentCitizenships}
+          onChange={(codes) =>
             setProfile({
               ...profile,
-              self: {
-                ...self,
-                currentCitizenships: e.target.value ? [e.target.value] : [],
-              },
+              self: { ...self, currentCitizenships: codes },
             })
           }
-          className="mt-1 w-full rounded-md bg-panel border border-border px-3 py-2"
-        >
-          <option value="">- Select -</option>
-          {COUNTRIES.map((c) => (
-            <option key={c.code} value={c.code}>
-              {c.flag} {c.name}
-            </option>
-          ))}
-        </select>
+          className="mt-1"
+        />
       </label>
 
       <label className="block">
@@ -284,25 +275,21 @@ function SpouseStep({
           Are you married to a citizen of another country? (optional - many
           countries have marriage fast-tracks)
         </span>
-        <select
-          value={s?.citizenships[0] ?? ""}
-          onChange={(e) =>
+        <CountrySelect
+          mode="multi"
+          value={s?.citizenships ?? []}
+          placeholder="- Not married to a foreign citizen -"
+          onChange={(codes) =>
             setProfile({
               ...profile,
-              spouse: e.target.value
-                ? { citizenships: [e.target.value], marriedYear: s?.marriedYear }
-                : undefined,
+              spouse:
+                codes.length > 0
+                  ? { citizenships: codes, marriedYear: s?.marriedYear }
+                  : undefined,
             })
           }
-          className="mt-1 w-full rounded-md bg-panel border border-border px-3 py-2"
-        >
-          <option value="">- Not married to a foreign citizen -</option>
-          {COUNTRIES.map((c) => (
-            <option key={c.code} value={c.code}>
-              {c.flag} {c.name}
-            </option>
-          ))}
-        </select>
+          className="mt-1"
+        />
       </label>
 
       {s && (

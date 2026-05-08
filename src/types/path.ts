@@ -36,7 +36,7 @@ export type PracticalNotes = {
     required: boolean;
     note?: string;                         // history / civics / culture exam, if any
   };
-  singleSource?: boolean;                  // true when a quantitative claim in successNote rests on a single source - UI surfaces a warning
+  singleSource?: "government" | "secondary"; // marks a single-source claim. "government" = green triangle (official source), "secondary" = yellow triangle (practitioner/news/non-official).
 };
 
 export type Path = {

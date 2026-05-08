@@ -69,6 +69,6 @@ export const polandDescent: Path = {
     lawyerTypicallyNeeded: "recommended",
     languageTest: { required: false, note: "No Polish language test for citizenship confirmation (only for residency-based recognition)." },
     knowledgeTest: { required: false },
-    singleSource: true,
+    singleSource: "government",
   },
 };

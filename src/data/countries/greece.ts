@@ -81,6 +81,6 @@ export const greeceDescent: Path = {
       note: "Greek language proficiency is required for naturalization-by-residency, not for descent claims.",
     },
     knowledgeTest: { required: false },
-    singleSource: true,
+    singleSource: "government",
   },
 };

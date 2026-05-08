@@ -1,5 +1,7 @@
 import type { Path } from "../../types/path";
+import type { AncestorKey } from "../../types/profile";
 import {
+  ancestorsBornIn,
   grandparentsBornIn,
   greatGrandparentsBornIn,
   parentsBornIn,
@@ -91,6 +93,123 @@ export const italyDescent: Path = {
     lawyerTypicallyNeeded: "recommended",
     languageTest: { required: false },
     knowledgeTest: { required: false },
-    singleSource: true,
+    singleSource: "secondary",
   },
 };
+
+// Maternal-line keys: any path that begins with "mother" includes a woman in the line.
+const MATERNAL_KEYS: AncestorKey[] = [
+  "mother",
+  "motherFather",
+  "motherMother",
+  "motherFatherFather",
+  "motherFatherMother",
+  "motherMotherFather",
+  "motherMotherMother",
+  "fatherMother",
+  "fatherMotherFather",
+  "fatherMotherMother",
+  "fatherFatherMother",
+];
+
+export const italy1948MaternalLine: Path = {
+  id: "it-1948-maternal-line",
+  country: "Italy",
+  countryCode: "IT",
+  flag: "🇮🇹",
+  pathType: "descent",
+  name: "Italian citizenship - 1948 maternal-line judicial route",
+  shortDescription:
+    "Pre-1948 Italian women could not transmit citizenship under then-prevailing law. The 1948 maternal-line judicial route - grounded in Articles 3 and 29 of the Italian Constitution - lets descendants of such women claim Italian citizenship via civil-court action in Italy. Law 74/2025 did not eliminate this judicial route.",
+  evaluate: (p) => {
+    const italianAncestors = ancestorsBornIn(p, "IT");
+    const maternalItalian = italianAncestors.filter((a) =>
+      MATERNAL_KEYS.includes(a.key),
+    );
+    const preBirth1948 = maternalItalian.filter(
+      (a) =>
+        typeof a.ancestor.birthYear === "number" &&
+        a.ancestor.birthYear < 1948,
+    );
+
+    if (preBirth1948.length) {
+      return {
+        tier: "possibly",
+        reasons: [
+          `You have an Italian-born woman in your maternal line born before 1948 (${preBirth1948[0].key}).`,
+          "Pre-1948 Italian women could not transmit citizenship under then-prevailing law; the judicial route in Italian civil courts allows descendants to claim citizenship despite this gendered exclusion.",
+          "Law 74/2025 tightened administrative claims but the maternal-line judicial route remains open with no firm generational cap.",
+        ],
+        needToVerify: [
+          "Filed as a civil-court action in Italy (not via consulate); lawyer essentially required.",
+          "Documented chain of vital records establishing the pre-1948 Italian woman in the line.",
+          "Court-route timelines and costs are materially higher than administrative paths.",
+        ],
+      };
+    }
+
+    if (maternalItalian.length) {
+      return {
+        tier: "possibly",
+        reasons: [
+          `You have an Italian-born woman in your maternal line (${maternalItalian[0].key}).`,
+          "If she was born before 1948 (and the gendered transmission rule applied), the judicial route in Rome civil court may be available.",
+        ],
+        needToVerify: [
+          "Whether the Italian-born woman in the line was born before 1948.",
+          "Whether the chain establishes a gendered exclusion that the judicial route can remedy.",
+        ],
+      };
+    }
+
+    return {
+      tier: "unlikely",
+      reasons: [
+        "No Italian-born woman recorded in your maternal line.",
+        "The 1948 maternal-line route applies only to descendants of pre-1948 Italian women whose citizenship was non-transmissible at the time.",
+      ],
+    };
+  },
+  requirementsSummary: [
+    "Documented chain establishing a pre-1948 woman in the line who lost or could not transmit Italian citizenship.",
+    "Civil-court action in Italy (not consular).",
+    "Lawyer essentially required.",
+    "No language test, no civics test.",
+  ],
+  documentsOutline: [
+    "Italian birth certificate of the pre-1948 woman in the line",
+    "Marriage and birth certificates linking each generation",
+    "Apostilled translations into Italian",
+    "Italian lawyer engagement and power of attorney",
+  ],
+  caveats: [
+    "Judicial process is expensive and requires Italian counsel.",
+    "Law 74/2025 created a procedural overlay but did not eliminate this court route.",
+  ],
+  officialLinks: [
+    {
+      label: "Boccadutri - Italian citizenship via court proceedings",
+      url: "https://www.boccadutri.com/obtaining-italian-citizenship-through-legal-proceedings/",
+    },
+    {
+      label: "Italy Law Firms - Jus sanguinis 2025 reform",
+      url: "https://italylawfirms.com/en/the-jus-sanguinis-2025-reform-italian-citizenship-law/",
+    },
+    {
+      label: "Italian Citizenship Assistance - DL 36/2025 conversion",
+      url: "https://italiancitizenshipassistance.com/decree-law-no-36-2025-conversion-into-law/",
+    },
+  ],
+  estTimelineMonths: [18, 48],
+  estCostUSD: [7000, 20000],
+  lastReviewed: "2026-05-08",
+  practical: {
+    successSignal: "moderate",
+    successNote:
+      "Court route via Italian civil courts; clean cases largely succeed but 2025 reform created procedural overlay. Lawyer essentially required.",
+    lawyerTypicallyNeeded: "yes",
+    languageTest: { required: false },
+    knowledgeTest: { required: false },
+  },
+};
+
