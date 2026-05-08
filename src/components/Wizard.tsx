@@ -32,7 +32,7 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
     <div className="mx-auto max-w-3xl px-6 py-10">
       <button
         onClick={onBack}
-        className="text-muted text-sm hover:text-ink mb-6"
+        className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
       >
         ← Back to start
       </button>
@@ -41,7 +41,7 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
         {STEPS.map((label, i) => (
           <div
             key={label}
-            className={`h-1.5 flex-1 rounded-full ${
+            className={`h-1.5 flex-1 rounded-full transition-colors ${
               i <= step ? "bg-accent" : "bg-border"
             }`}
             title={label}
@@ -49,9 +49,14 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
         ))}
       </div>
 
-      <h2 className="text-2xl font-semibold mb-1">{STEPS[step]}</h2>
-      <p className="text-muted text-sm mb-6">
-        Step {step + 1} of {STEPS.length} · You can leave anything unknown.
+      <p className="font-mono uppercase tracking-[0.22em] text-[11px] text-muted mb-3">
+        Step {step + 1} of {STEPS.length}
+      </p>
+      <h2 className="font-extrabold leading-[1.1] tracking-[-0.025em] text-[clamp(1.75rem,3vw,2.25rem)] mb-2">
+        {STEPS[step]}
+      </h2>
+      <p className="text-muted text-sm mb-8">
+        You can leave anything unknown.
       </p>
 
       <div className="space-y-4">
@@ -83,25 +88,25 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
         {step === 5 && <SpouseStep profile={profile} setProfile={setProfile} />}
       </div>
 
-      <div className="flex justify-between mt-10">
+      <div className="flex justify-between items-center mt-12 pt-6 border-t border-border">
         <button
           disabled={step === 0}
           onClick={() => setStep((s) => Math.max(0, s - 1))}
-          className="rounded-md border border-border px-4 py-2 text-sm disabled:opacity-40"
+          className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-border text-ink px-5 py-3 transition hover:border-accent hover:text-accent disabled:opacity-30 disabled:hover:border-border disabled:hover:text-ink"
         >
           ← Previous
         </button>
         {step < last ? (
           <button
             onClick={() => setStep((s) => Math.min(last, s + 1))}
-            className="rounded-md bg-accent text-bg px-5 py-2 text-sm font-medium"
+            className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium bg-accent text-white px-6 py-3 transition hover:brightness-105"
           >
             Next →
           </button>
         ) : (
           <button
             onClick={onSubmit}
-            className="rounded-md bg-likely text-bg px-5 py-2 text-sm font-medium"
+            className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium bg-likely text-bg px-6 py-3 transition hover:brightness-105"
           >
             See my matches →
           </button>

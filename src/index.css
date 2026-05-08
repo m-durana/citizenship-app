@@ -13,9 +13,10 @@ html {
 }
 
 body {
-  background-color: #0b0d10;
-  color: #e8eaee;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+  background-color: #0e0e10;
+  color: #f3f4f6;
+  font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -24,4 +25,76 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+}
+
+/* form controls inherit the body sans by default */
+input, select, textarea, button { font-family: inherit; }
+
+/* ============ Passport cover (Landing hero artwork) ============ */
+.passport-card {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 25%, #7a2231 0%, #5a1822 45%, #3d101a 100%);
+  border-radius: 6px;
+  padding: 1.5rem 1.25rem 1.25rem;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.55),
+    inset 0 0 0 1px rgba(233,196,106,0.18),
+    inset 0 0 90px rgba(0,0,0,0.45);
+  overflow: hidden;
+  transform: rotate(3deg);
+  opacity: 0;
+  animation: passport-fade 0.9s ease 0.4s forwards,
+             passport-hover 6s ease-in-out 1.5s infinite;
+}
+@keyframes passport-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes passport-hover {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  50%      { transform: rotate(2.6deg) translateY(-6px); }
+}
+
+.passport-passport {
+  position: absolute; left: 0; right: 0; top: 15%;
+  text-align: center;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: #e9c46a;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  padding-left: 0.36em;
+}
+
+.passport-crest {
+  position: absolute; left: 50%; top: 52%;
+  transform: translate(-50%, -50%);
+  width: 56%;
+  height: auto;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.35));
+}
+
+.passport-meridian { animation: meridian-sweep 80s linear infinite; }
+@keyframes meridian-sweep {
+  0%, 100% { rx: 42px; opacity: 1; }
+  25%      { rx: 0px;  opacity: 0; }
+  50%      { rx: 42px; opacity: 1; }
+  75%      { rx: 0px;  opacity: 0; }
+}
+.passport-meridian.m2 { animation-delay: -27s; }
+.passport-meridian.m3 { animation-delay: -54s; }
+
+.passport-biometric {
+  position: absolute; left: 50%; bottom: 8%;
+  transform: translateX(-50%);
+  width: 28%;
+  height: auto;
+  opacity: 0.95;
+  overflow: visible;
+}
+
+/* ============ Reveal animation for hero text ============ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

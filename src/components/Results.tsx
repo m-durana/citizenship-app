@@ -32,15 +32,17 @@ export function Results({ profile, onBack, onRestart }: Props) {
     <div className="mx-auto max-w-4xl px-6 py-10">
       <button
         onClick={onBack}
-        className="text-muted text-sm hover:text-ink mb-6"
+        className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
       >
         ← Edit my answers
       </button>
 
-      <h1 className="text-3xl font-semibold mb-2">Your matches</h1>
-      <p className="text-muted mb-10">
+      <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
+        Your matches
+      </h1>
+      <p className="text-ink/70 max-w-[40rem] mb-12 leading-relaxed">
         Based on your answers, here are paths to a second citizenship that look
-        worth pursuing - and which probably aren't.
+        worth pursuing, and which probably aren't.
       </p>
 
       <TierSection
