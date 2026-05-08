@@ -88,7 +88,7 @@ export function Landing({ onStart, onBrowse }: Props) {
             </button>
             <button
               onClick={onBrowse}
-              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-white/10 bg-transparent text-ink px-6 py-4 transition hover:bg-accent hover:border-accent hover:text-white"
+              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-white/10 text-ink px-6 py-4 transition hover:border-accent hover:text-accent"
             >
               Browse all rules
             </button>
