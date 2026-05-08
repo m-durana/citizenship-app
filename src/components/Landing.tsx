@@ -33,9 +33,9 @@ function PassportBackdrop() {
 
 export function Landing({ onStart, onBrowse }: Props) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full min-h-screen flex items-center justify-center">
       <PassportBackdrop />
-      <div className="relative z-10 mx-auto max-w-3xl px-6 py-16">
+      <div className="relative z-10 w-full max-w-3xl px-6 py-16">
         <p className="text-accent text-sm tracking-widest uppercase mb-4">
           Heritage → Passport
         </p>
