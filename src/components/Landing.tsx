@@ -33,7 +33,7 @@ function PassportCover() {
       </svg>
 
       {/* Official ICAO e-passport logo, unmodified from Wikipedia
-          (en.wikipedia.org/wiki/Biometric_passport) — only fill color changed */}
+          (en.wikipedia.org/wiki/Biometric_passport) - only fill color changed */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="117"

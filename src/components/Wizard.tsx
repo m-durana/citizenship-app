@@ -29,7 +29,7 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
   const last = STEPS.length - 1;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10">
+    <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
       <button
         onClick={onBack}
         className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
@@ -52,11 +52,11 @@ export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
       <p className="font-mono uppercase tracking-[0.22em] text-[11px] text-muted mb-3">
         Step {step + 1} of {STEPS.length}
       </p>
-      <h2 className="font-extrabold leading-[1.1] tracking-[-0.025em] text-[clamp(1.75rem,3vw,2.25rem)] mb-2">
+      <h2 className="font-extrabold leading-[1.1] tracking-[-0.025em] text-[clamp(1.75rem,3vw,2.25rem)] mb-3">
         {STEPS[step]}
       </h2>
-      <p className="text-muted text-sm mb-8">
-        You can leave anything unknown.
+      <p className="text-ink/70 mb-8 leading-relaxed">
+        Leave anything unknown blank - the wizard is conservative, so a missing field is treated as "unknown" rather than "no", and you'll still see any path that could plausibly apply if that gap resolves in your favor. You can come back and refine your answers at any time.
       </p>
 
       <div className="space-y-4">
@@ -159,7 +159,7 @@ function AboutYouStep({
               },
             })
           }
-          className="mt-1 w-full rounded-md bg-panel border border-border px-3 py-2"
+          className="mt-1 w-full bg-panel border border-border px-3 h-10"
           placeholder="e.g. 1995"
         />
       </label>
@@ -230,7 +230,7 @@ function HeritageStep({
           onChange={(e) =>
             setH({ jewish: (e.target.value || undefined) as typeof h.jewish })
           }
-          className="mt-1 w-full rounded-md bg-panel border border-border px-3 py-2"
+          className="mt-1 w-full bg-panel border border-border px-3 h-10"
         >
           <option value="">- Prefer not to say -</option>
           <option value="none">No</option>
@@ -321,7 +321,7 @@ function SpouseStep({
                 },
               })
             }
-            className="mt-1 w-full rounded-md bg-panel border border-border px-3 py-2"
+            className="mt-1 w-full bg-panel border border-border px-3 h-10"
           />
         </label>
       )}

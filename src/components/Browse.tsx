@@ -3,7 +3,7 @@ import { allPaths } from "../data/countries/_registry";
 import type { Path, PathType } from "../types/path";
 import { isEU } from "../data/countries";
 
-type Props = { onBack: () => void };
+type Props = { onBack: () => void; onSources: () => void };
 
 const TYPE_LABEL: Record<PathType, string> = {
   descent: "Descent",
@@ -21,7 +21,7 @@ const TYPE_ORDER: PathType[] = [
   "marriage",
 ];
 
-export function Browse({ onBack }: Props) {
+export function Browse({ onBack, onSources }: Props) {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<PathType | "all">("all");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -54,10 +54,18 @@ export function Browse({ onBack }: Props) {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <button onClick={onBack} className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition">
-        ← Home
-      </button>
+    <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
+      <div className="flex items-center justify-between mb-8">
+        <button onClick={onBack} className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink transition">
+          ← Home
+        </button>
+        <button
+          onClick={onSources}
+          className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-accent transition"
+        >
+          Sources →
+        </button>
+      </div>
 
       <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
         Browse all rules
@@ -78,7 +86,7 @@ export function Browse({ onBack }: Props) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by country or keyword…"
-          className="flex-1 min-w-[16rem] rounded-md border border-border bg-bg/40 px-3 py-2 text-sm placeholder:text-muted/70 focus:outline-none focus:border-accent"
+          className="flex-1 min-w-[16rem] border border-border bg-bg/40 px-3 h-10 text-sm placeholder:text-muted/70 focus:outline-none focus:border-accent"
         />
       </div>
 
@@ -127,9 +135,9 @@ function FilterChip({
   return (
     <button
       onClick={onClick}
-      className={`text-xs px-3 py-1.5 rounded-full border transition ${
+      className={`font-mono uppercase tracking-[0.18em] text-[10px] font-medium px-3 py-2 border transition ${
         active
-          ? "bg-accent/15 border-accent/50 text-accent"
+          ? "border-accent text-accent bg-accent/10"
           : "border-border text-muted hover:text-ink hover:border-ink/30"
       }`}
     >
@@ -148,7 +156,7 @@ function PathRow({
   onToggle: () => void;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-bg/30">
+    <div className="border border-border bg-bg/30">
       <button
         onClick={onToggle}
         className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-bg/60 transition"
@@ -157,11 +165,11 @@ function PathRow({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-medium">{path.country}</span>
-            <span className="text-xs px-1.5 py-0.5 rounded bg-border/50 text-muted">
+            <span className="font-mono uppercase tracking-[0.16em] text-[10px] px-1.5 py-0.5 border border-border text-muted">
               {TYPE_LABEL[path.pathType]}
             </span>
             {isEU(path.countryCode) && (
-              <span className="text-xs px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/30">
+              <span className="font-mono uppercase tracking-[0.16em] text-[10px] px-1.5 py-0.5 border border-accent/40 text-accent bg-accent/10">
                 EU
               </span>
             )}
@@ -171,7 +179,12 @@ function PathRow({
         <span className="text-muted text-xs">{open ? "▾" : "▸"}</span>
       </button>
 
-      {open && (
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
         <div className="px-4 pb-5 pt-1 border-t border-border space-y-4 text-sm">
           <p className="text-ink/85 mt-3">{path.shortDescription}</p>
 
@@ -224,7 +237,8 @@ function PathRow({
             <span>Last reviewed: {path.lastReviewed}</span>
           </div>
         </div>
-      )}
+        </div>
+      </div>
     </div>
   );
 }

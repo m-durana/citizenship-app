@@ -85,11 +85,17 @@ export function CountrySelect(props: Props) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full text-left rounded-md bg-panel border border-border px-3 py-2 flex items-center justify-between gap-2 min-h-[42px]"
+        className={`w-full text-left bg-panel border border-border px-3 flex items-center justify-between gap-2 ${
+          props.mode === "single" ? "h-10" : "min-h-[40px] py-1.5"
+        }`}
       >
-        <div className="flex flex-wrap gap-1.5 items-center flex-1 min-w-0">
+        <div
+          className={`flex items-center gap-1.5 flex-1 min-w-0 ${
+            props.mode === "multi" ? "flex-wrap" : "overflow-hidden"
+          }`}
+        >
           {selectedCodes.length === 0 && (
-            <span className="text-muted">{placeholder}</span>
+            <span className="text-muted text-sm truncate">{placeholder}</span>
           )}
           {props.mode === "multi" &&
             selectedCodes.map((code) => {
@@ -98,15 +104,15 @@ export function CountrySelect(props: Props) {
               return (
                 <span
                   key={code}
-                  className="inline-flex items-center gap-1 rounded-full bg-bg border border-border px-2 py-0.5 text-sm"
+                  className="inline-flex items-center gap-1.5 bg-bg border border-border px-2 py-1 font-mono uppercase tracking-[0.14em] text-[10px] text-ink"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <span>{c.flag}</span>
+                  <span className="text-sm normal-case tracking-normal">{c.flag}</span>
                   <span>{c.name}</span>
                   <button
                     type="button"
                     onClick={() => clear(code)}
-                    className="text-muted hover:text-ink ml-0.5"
+                    className="text-muted hover:text-ink ml-0.5 text-sm leading-none"
                     aria-label={`Remove ${c.name}`}
                   >
                     ×
@@ -115,9 +121,9 @@ export function CountrySelect(props: Props) {
               );
             })}
           {props.mode === "single" && selectedCodes[0] && (
-            <span className="inline-flex items-center gap-1.5">
-              <span>{COUNTRY_BY_CODE[selectedCodes[0]]?.flag}</span>
-              <span>{COUNTRY_BY_CODE[selectedCodes[0]]?.name}</span>
+            <span className="inline-flex items-center gap-1.5 min-w-0">
+              <span className="shrink-0">{COUNTRY_BY_CODE[selectedCodes[0]]?.flag}</span>
+              <span className="truncate text-sm">{COUNTRY_BY_CODE[selectedCodes[0]]?.name}</span>
             </span>
           )}
         </div>
@@ -125,7 +131,7 @@ export function CountrySelect(props: Props) {
       </button>
 
       {open && (
-        <div className="absolute z-20 mt-1 w-full rounded-md bg-panel border border-border shadow-lg max-h-72 overflow-hidden flex flex-col">
+        <div className="absolute z-20 mt-1 w-full bg-panel border border-border shadow-lg max-h-72 overflow-hidden flex flex-col">
           <input
             ref={inputRef}
             type="text"

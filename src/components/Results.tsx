@@ -10,6 +10,7 @@ type Props = {
   profile: UserProfile;
   onBack: () => void;
   onRestart: () => void;
+  onSources: () => void;
 };
 
 const TIER_COLOR: Record<Tier, string> = {
@@ -24,12 +25,12 @@ const TIER_DOT: Record<Tier, string> = {
   unlikely: "bg-unlikely",
 };
 
-export function Results({ profile, onBack, onRestart }: Props) {
+export function Results({ profile, onBack, onRestart, onSources }: Props) {
   const evaluated = useMemo(() => evaluateProfile(profile), [profile]);
   const grouped = useMemo(() => groupByTier(evaluated), [evaluated]);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-10">
+    <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
       <button
         onClick={onBack}
         className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
@@ -74,7 +75,14 @@ export function Results({ profile, onBack, onRestart }: Props) {
           starting an application.
         </p>
         <p className="text-xs mt-3">
-          Country rules last updated <strong className="text-ink/80">{LAST_UPDATED}</strong>. Every claim cites an official-government or practitioner source; see <code className="text-ink/80">SOURCES.md</code> in the repository.
+          Country rules last updated <strong className="text-ink/80">{LAST_UPDATED}</strong>. Every claim cites an official-government or practitioner source - see the{" "}
+          <button
+            onClick={onSources}
+            className="text-accent hover:underline align-baseline"
+          >
+            sources page
+          </button>
+          .
         </p>
         <button
           onClick={onRestart}
@@ -132,18 +140,18 @@ function TierSection({
 function PathCard({ path, tier }: { path: EvaluatedPath; tier: Tier }) {
   const [expanded, setExpanded] = useState(tier === "likely");
   return (
-    <div className={`rounded-lg border p-5 ${TIER_COLOR[tier]}`}>
+    <div className={`border p-5 ${TIER_COLOR[tier]}`}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="text-2xl">{path.flag}</span>
             <h3 className="font-semibold">{path.country}</h3>
-            <span className="text-xs px-1.5 py-0.5 rounded bg-border/50 text-muted">
+            <span className="font-mono uppercase tracking-[0.16em] text-[10px] px-1.5 py-0.5 border border-border text-muted">
               {path.pathType}
             </span>
             {isEU(path.countryCode) && (
               <span
-                className="text-xs px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/30"
+                className="font-mono uppercase tracking-[0.16em] text-[10px] px-1.5 py-0.5 border border-accent/40 text-accent bg-accent/10"
                 title="EU member state - grants freedom of movement, work, and residence across all 27 EU countries."
               >
                 EU
@@ -160,13 +168,28 @@ function PathCard({ path, tier }: { path: EvaluatedPath; tier: Tier }) {
         </button>
       </div>
 
-      <div className="mt-3 space-y-1 text-sm">
-        {path.match.reasons.map((r, i) => (
-          <p key={i} className="text-ink/85">
-            • {r}
+      {(tier === "likely" || tier === "possibly") && path.match.reasons.length > 0 ? (
+        <div className="mt-3 text-sm">
+          <p className="font-mono uppercase tracking-[0.18em] text-[10px] text-muted mb-1">
+            Why this matched your answers
           </p>
-        ))}
-      </div>
+          <ul className="space-y-1">
+            {path.match.reasons.map((r, i) => (
+              <li key={i} className="text-ink/90">
+                • {r}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="mt-3 space-y-1 text-sm">
+          {path.match.reasons.map((r, i) => (
+            <p key={i} className="text-ink/85">
+              • {r}
+            </p>
+          ))}
+        </div>
+      )}
 
       {path.match.needToVerify && path.match.needToVerify.length > 0 && (
         <div className="mt-3 text-sm">
@@ -219,22 +242,24 @@ function PathCard({ path, tier }: { path: EvaluatedPath; tier: Tier }) {
                   </span>
                   {path.practical.successNote ? ` (${path.practical.successNote})` : ""}.
                   {path.practical.singleSource === "government" && (
-                    <span
-                      title="One or more figures here rest on a single official-government source."
-                      className="ml-1 text-emerald-500"
-                      aria-label="Single-source claim from an official government source"
-                    >
-                      ⚠
-                    </span>
+                    <Tooltip text="This success rate rests on a single official government source - typically a published statistics bulletin from the relevant ministry. Treat it as authoritative but not independently corroborated.">
+                      <span
+                        className="ml-1 text-emerald-500 cursor-help"
+                        aria-label="Single-source claim from an official government source"
+                      >
+                        ⚠
+                      </span>
+                    </Tooltip>
                   )}
                   {path.practical.singleSource === "secondary" && (
-                    <span
-                      title="One or more figures here rest on a single non-government source. Verify before relying on it."
-                      className="ml-1 text-amber-500"
-                      aria-label="Single-source claim - verify before relying on it"
-                    >
-                      ⚠
-                    </span>
+                    <Tooltip text="This success rate rests on a single non-government source (practitioner blog, news article, or industry report). It's a useful signal but not officially corroborated.">
+                      <span
+                        className="ml-1 text-amber-500 cursor-help"
+                        aria-label="Single-source claim - verify before relying on it"
+                      >
+                        ⚠
+                      </span>
+                    </Tooltip>
                   )}
                 </li>
                 <li>
@@ -315,5 +340,19 @@ function Block({
       <p className="text-muted text-xs uppercase tracking-wider mb-1">{title}</p>
       {children}
     </div>
+  );
+}
+
+function Tooltip({ text, children }: { text: string; children: React.ReactNode }) {
+  return (
+    <span className="relative inline-block group align-baseline">
+      {children}
+      <span
+        role="tooltip"
+        className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block group-focus-within:block z-20 w-64 border border-border bg-panel px-3 py-2 text-xs text-ink/90 shadow-xl leading-snug whitespace-normal text-left normal-case tracking-normal font-sans"
+      >
+        {text}
+      </span>
+    </span>
   );
 }

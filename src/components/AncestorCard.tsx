@@ -52,7 +52,7 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-panel p-4 space-y-3">
+    <div className="border border-border bg-panel p-4 space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="font-medium">{ANCESTOR_LABELS[keyName]}</h3>
         {a.birthCountry && (
@@ -87,7 +87,7 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
                 birthYear: e.target.value ? Number(e.target.value) : undefined,
               })
             }
-            className="mt-1 w-full rounded-md bg-bg border border-border px-2 py-1.5 text-sm"
+            className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
             placeholder="e.g. 1925"
           />
         </label>
@@ -112,7 +112,7 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
                   : undefined,
               })
             }
-            className="mt-1 w-full rounded-md bg-bg border border-border px-2 py-1.5 text-sm"
+            className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
           >
             <option value="">- Don't know / not applicable -</option>
             <option value="before">Yes, before {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born</option>
