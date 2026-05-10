@@ -31,13 +31,6 @@ export function Results({ profile, onBack, onRestart, onSources }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
-      <button
-        onClick={onBack}
-        className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
-      >
-        ← Edit my answers
-      </button>
-
       <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
         Your matches
       </h1>
@@ -66,6 +59,21 @@ export function Results({ profile, onBack, onRestart, onSources }: Props) {
         collapsedByDefault
       />
 
+      <div className="flex flex-wrap gap-3.5 mt-12">
+        <button
+          onClick={onBack}
+          className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-accent bg-accent text-white px-7 py-4 transition hover:bg-transparent hover:text-accent"
+        >
+          Edit my responses
+        </button>
+        <button
+          onClick={onRestart}
+          className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-white/10 text-ink px-6 py-4 transition hover:border-accent hover:text-accent"
+        >
+          Start fresh
+        </button>
+      </div>
+
       <div className="mt-12 border-t border-border pt-6 text-sm text-muted leading-relaxed">
         <p className="mb-2">
           <strong className="text-ink">Disclaimer.</strong> This tool is
@@ -84,12 +92,6 @@ export function Results({ profile, onBack, onRestart, onSources }: Props) {
           </button>
           .
         </p>
-        <button
-          onClick={onRestart}
-          className="text-accent hover:underline mt-3"
-        >
-          Start over with a fresh profile
-        </button>
       </div>
     </div>
   );

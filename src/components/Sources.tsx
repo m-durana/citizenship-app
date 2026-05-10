@@ -2,8 +2,6 @@ import { useMemo } from "react";
 import { allPaths } from "../data/countries/_registry";
 import type { Path, PathType } from "../types/path";
 
-type Props = { onBack: () => void };
-
 const TYPE_LABEL: Record<PathType, string> = {
   descent: "Descent",
   heritage: "Heritage",
@@ -19,7 +17,7 @@ type CountryGroup = {
   paths: Path[];
 };
 
-export function Sources({ onBack }: Props) {
+export function Sources() {
   const groups = useMemo<CountryGroup[]>(() => {
     const byCode = new Map<string, CountryGroup>();
     for (const p of allPaths) {
@@ -50,13 +48,6 @@ export function Sources({ onBack }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
-      <button
-        onClick={onBack}
-        className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
-      >
-        ← Back
-      </button>
-
       <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
         Sources
       </h1>

@@ -3,7 +3,6 @@ import { allPaths } from "../data/countries/_registry";
 import type { Path, PathType } from "../types/path";
 import { isEU } from "../data/countries";
 
-type Props = { onBack: () => void; onSources: () => void };
 
 const TYPE_LABEL: Record<PathType, string> = {
   descent: "Descent",
@@ -21,7 +20,7 @@ const TYPE_ORDER: PathType[] = [
   "marriage",
 ];
 
-export function Browse({ onBack, onSources }: Props) {
+export function Browse() {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<PathType | "all">("all");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -55,18 +54,6 @@ export function Browse({ onBack, onSources }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
-      <div className="flex items-center justify-between mb-8">
-        <button onClick={onBack} className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink transition">
-          ← Home
-        </button>
-        <button
-          onClick={onSources}
-          className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-accent transition"
-        >
-          Sources →
-        </button>
-      </div>
-
       <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
         Browse all rules
       </h1>

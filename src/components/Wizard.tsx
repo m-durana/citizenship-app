@@ -12,7 +12,6 @@ type Props = {
   profile: UserProfile;
   setProfile: (p: UserProfile) => void;
   onSubmit: () => void;
-  onBack: () => void;
 };
 
 const STEPS = [
@@ -24,19 +23,12 @@ const STEPS = [
   "Spouse",
 ] as const;
 
-export function Wizard({ profile, setProfile, onSubmit, onBack }: Props) {
+export function Wizard({ profile, setProfile, onSubmit }: Props) {
   const [step, setStep] = useState(0);
   const last = STEPS.length - 1;
 
   return (
     <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
-      <button
-        onClick={onBack}
-        className="font-mono uppercase tracking-[0.18em] text-[11px] text-muted hover:text-ink mb-8 transition"
-      >
-        ← Back to start
-      </button>
-
       <div className="flex gap-1 mb-8">
         {STEPS.map((label, i) => (
           <div

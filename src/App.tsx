@@ -48,19 +48,13 @@ export default function App() {
           onBrowse={() => navigate("browse")}
         />
       )}
-      {screen === "browse" && (
-        <Browse
-          onBack={() => navigate("landing")}
-          onSources={() => navigate("sources")}
-        />
-      )}
-      {screen === "sources" && <Sources onBack={() => window.history.back()} />}
+      {screen === "browse" && <Browse />}
+      {screen === "sources" && <Sources />}
       {screen === "wizard" && (
         <Wizard
           profile={profile}
           setProfile={setProfile}
           onSubmit={() => navigate("results")}
-          onBack={() => navigate("landing")}
         />
       )}
       {screen === "results" && (
