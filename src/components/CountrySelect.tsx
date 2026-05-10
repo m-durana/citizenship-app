@@ -155,9 +155,11 @@ export function CountrySelect(props: Props) {
                 >
                   {props.mode === "multi" && (
                     <span
-                      className={`inline-block w-4 h-4 rounded border ${selected ? "bg-accent border-accent" : "border-border"}`}
+                      className={`inline-flex items-center justify-center w-4 h-4 border text-[11px] leading-none ${selected ? "bg-accent border-accent text-white" : "border-border text-transparent"}`}
                       aria-hidden="true"
-                    />
+                    >
+                      ✓
+                    </span>
                   )}
                   <span>{c.flag}</span>
                   <span className="flex-1">{c.name}</span>
