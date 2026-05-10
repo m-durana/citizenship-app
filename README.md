@@ -1,4 +1,4 @@
-# Heritage → Passport
+# Passport
 
 A static web tool that asks about your family heritage and tells you which countries you might realistically qualify for citizenship in.
 
