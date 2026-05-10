@@ -54,17 +54,17 @@ function PassportCover() {
 
 export function Landing({ onStart, onBrowse }: Props) {
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center">
+    <div className="relative w-full min-h-svh flex items-start md:items-center justify-center">
       <div
         className="
           relative z-10 w-full max-w-[1200px]
-          px-6 md:px-8 py-12 md:py-16
-          grid items-center gap-10 md:gap-14
+          px-5 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16
+          grid items-center gap-8 md:gap-14
           md:grid-cols-[minmax(0,1fr)_clamp(280px,34%,380px)]
         "
       >
         <div>
-          <h1 className="font-extrabold leading-[1.05] tracking-[-0.035em] text-[clamp(2.25rem,4.6vw,3.6rem)] max-w-[16ch]">
+          <h1 className="font-extrabold leading-[1.05] tracking-[-0.035em] text-[clamp(2rem,10vw,3.6rem)] max-w-[16ch]">
             Where could your family tree get you a{" "}
             <em className="not-italic font-extrabold text-accent tracking-[-0.035em]">
               passport
@@ -72,17 +72,17 @@ export function Landing({ onStart, onBrowse }: Props) {
             ?
           </h1>
 
-          <p className="text-ink/70 text-[1.0625rem] leading-[1.65] max-w-[36rem] mt-8 mb-9">
+          <p className="text-ink/70 text-[1rem] sm:text-[1.0625rem] leading-[1.65] max-w-[36rem] mt-6 sm:mt-8 mb-7 sm:mb-9">
             Answer a few questions about your ancestors and we'll show which
             citizenship paths look realistic, across descent, heritage,
             marriage, and ancestry-visa routes. Your answers stay in your
             browser; nothing is ever sent to a server.
           </p>
 
-          <div className="flex flex-wrap gap-3.5 mb-10">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3.5 mb-8 sm:mb-10">
             <button
               onClick={onStart}
-              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-accent bg-accent text-white px-7 py-4 transition hover:bg-transparent hover:text-accent"
+              className="font-mono uppercase tracking-[0.22em] text-[12px] font-medium border border-accent bg-accent text-white px-6 sm:px-7 py-4 transition hover:bg-transparent hover:text-accent"
             >
               Begin questionnaire
             </button>
@@ -104,7 +104,9 @@ export function Landing({ onStart, onBrowse }: Props) {
           </div>
         </div>
 
-        <PassportCover />
+        <div className="hidden md:block">
+          <PassportCover />
+        </div>
       </div>
     </div>
   );

@@ -53,11 +53,11 @@ export function Browse() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 md:px-6 py-10">
+    <div className="w-full max-w-full overflow-x-hidden mx-auto md:max-w-5xl px-4 md:px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-10 md:py-10">
       <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
         Browse all rules
       </h1>
-      <p className="text-ink/70 mb-8 leading-relaxed">
+      <p className="text-ink/70 mb-8 leading-relaxed break-words">
         Every citizenship path the tool evaluates, with requirements, timelines, and{" "}
         <a href="#/sources" className="text-accent hover:underline">sources</a>.{" "}
         <span className="text-ink/80">{allPaths.length}</span> paths across{" "}
@@ -71,11 +71,11 @@ export function Browse() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by country or keyword…"
-          className="flex-1 min-w-[16rem] border border-border bg-bg/40 px-3 h-10 text-sm placeholder:text-muted/70 focus:outline-none focus:border-accent"
+          className="flex-1 min-w-0 w-full sm:min-w-[16rem] border border-border bg-bg/40 px-3 h-10 text-sm placeholder:text-muted/70 focus:outline-none focus:border-accent"
         />
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6 max-w-full">
         <FilterChip
           active={typeFilter === "all"}
           onClick={() => setTypeFilter("all")}
@@ -120,7 +120,7 @@ function FilterChip({
   return (
     <button
       onClick={onClick}
-      className={`font-mono uppercase tracking-[0.18em] text-[10px] font-medium px-3 py-2 border transition ${
+      className={`font-mono uppercase tracking-[0.12em] sm:tracking-[0.18em] text-[10px] font-medium px-2.5 sm:px-3 py-2 border transition max-w-full ${
         active
           ? "border-accent text-accent bg-accent/10"
           : "border-border text-muted hover:text-ink hover:border-ink/30"
@@ -141,16 +141,16 @@ function PathRow({
   onToggle: () => void;
 }) {
   return (
-    <div className="border border-border bg-bg/30">
+    <div className="border border-border bg-bg/30 max-w-full overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-bg/60 transition"
+        className="w-full min-w-0 flex items-center gap-3 px-3 sm:px-4 py-3 text-left hover:bg-bg/60 transition"
       >
-        <span className="text-2xl">{path.flag}</span>
+        <span className="text-2xl shrink-0">{path.flag}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-medium">{path.country}</span>
-            <span className="font-mono uppercase tracking-[0.16em] text-[10px] px-1.5 py-0.5 border border-border text-muted">
+            <span className="font-medium min-w-0 break-words">{path.country}</span>
+            <span className="font-mono uppercase tracking-[0.12em] sm:tracking-[0.16em] text-[10px] px-1.5 py-0.5 border border-border text-muted max-w-full break-words">
               {TYPE_LABEL[path.pathType]}
             </span>
             {isEU(path.countryCode) && (
@@ -159,9 +159,9 @@ function PathRow({
               </span>
             )}
           </div>
-          <p className="text-sm text-ink/80 truncate">{path.name}</p>
+          <p className="text-sm text-ink/80 break-words">{path.name}</p>
         </div>
-        <span className="text-muted text-xs">{open ? "▾" : "▸"}</span>
+        <span className="text-muted text-xs shrink-0">{open ? "▾" : "▸"}</span>
       </button>
 
       <div
@@ -169,12 +169,12 @@ function PathRow({
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
       >
-        <div className="overflow-hidden">
-        <div className="px-4 pb-5 pt-1 border-t border-border space-y-4 text-sm">
-          <p className="text-ink/85 mt-3">{path.shortDescription}</p>
+        <div className="overflow-hidden min-w-0">
+        <div className="px-3 sm:px-4 pb-5 pt-1 border-t border-border space-y-4 text-sm min-w-0">
+          <p className="text-ink/85 mt-3 break-words">{path.shortDescription}</p>
 
           <Block title="Requirements">
-            <ul className="list-disc list-inside space-y-1 text-ink/80">
+            <ul className="list-disc list-outside pl-5 space-y-1 text-ink/80 break-words">
               {path.requirementsSummary.map((r, i) => (
                 <li key={i}>{r}</li>
               ))}
@@ -183,7 +183,7 @@ function PathRow({
 
           {path.caveats.length > 0 && (
             <Block title="Caveats">
-              <ul className="list-disc list-inside space-y-1 text-ink/80">
+              <ul className="list-disc list-outside pl-5 space-y-1 text-ink/80 break-words">
                 {path.caveats.map((r, i) => (
                   <li key={i}>{r}</li>
                 ))}
@@ -195,7 +195,7 @@ function PathRow({
             {path.officialLinks.length === 0 ? (
               <p className="text-muted italic">No sources listed.</p>
             ) : (
-              <ul className="space-y-1">
+              <ul className="space-y-1 min-w-0">
                 {path.officialLinks.map((l) => (
                   <li key={l.url}>
                     <a
@@ -212,7 +212,7 @@ function PathRow({
             )}
           </Block>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-muted text-xs">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-muted text-xs break-words">
             <span>
               Timeline: ~{path.estTimelineMonths[0]}–{path.estTimelineMonths[1]} months
             </span>
