@@ -57,13 +57,11 @@ export function Browse() {
       <h1 className="font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(2rem,4vw,3rem)] mb-3">
         Browse all rules
       </h1>
-      <p className="text-ink/70 max-w-[40rem] mb-8 leading-relaxed">
-        Every citizenship path the tool evaluates, with requirements, timelines, and sources.
-        {" "}
+      <p className="text-ink/70 mb-8 leading-relaxed">
+        Every citizenship path the tool evaluates, with requirements, timelines, and{" "}
+        <a href="#/sources" className="text-accent hover:underline">sources</a>.{" "}
         <span className="text-ink/80">{allPaths.length}</span> paths across{" "}
-        <span className="text-ink/80">
-          {new Set(allPaths.map((p) => p.countryCode)).size}
-        </span>{" "}
+        <span className="text-ink/80">{new Set(allPaths.map((p) => p.countryCode)).size}</span>{" "}
         countries.
       </p>
 
