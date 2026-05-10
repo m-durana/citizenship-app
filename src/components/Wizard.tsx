@@ -41,10 +41,7 @@ export function Wizard({ profile, setProfile, onSubmit }: Props) {
         ))}
       </div>
 
-      <p className="font-mono uppercase tracking-[0.22em] text-[11px] text-muted mb-3">
-        Step {step + 1} of {STEPS.length}
-      </p>
-      <h2 className="font-extrabold leading-[1.1] tracking-[-0.025em] text-[clamp(1.75rem,3vw,2.25rem)] mb-3">
+      <h2 className="font-extrabold leading-[1.1] tracking-[-0.025em] text-[clamp(1.75rem,3vw,2.25rem)] mb-3 mt-3">
         {STEPS[step]}
       </h2>
       <p className="text-ink/70 mb-8 leading-relaxed">
