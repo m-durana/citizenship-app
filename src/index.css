@@ -77,13 +77,15 @@ input, select, textarea, button { font-family: inherit; }
   cursor: pointer;
   outline: none;
 }
-.passport-crest.spinning {
-  animation: passport-crest-spin 0.9s cubic-bezier(0.45, 0.05, 0.25, 1) 1;
+/* On click, the meridian-sweep runs ~90× faster for one full cycle — visually
+ * the globe's longitudinal lines whip through one revolution and the ambient
+ * 80s sweep resumes. Phase offsets between m1/m2/m3 are scaled to keep the
+ * same staggered look at the faster duration. */
+.passport-crest.spinning .passport-meridian {
+  animation: meridian-sweep 0.9s linear 1;
 }
-@keyframes passport-crest-spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
+.passport-crest.spinning .passport-meridian.m2 { animation-delay: -0.304s; }
+.passport-crest.spinning .passport-meridian.m3 { animation-delay: -0.608s; }
 
 .passport-meridian { animation: meridian-sweep 80s linear infinite; }
 @keyframes meridian-sweep {

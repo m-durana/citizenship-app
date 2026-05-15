@@ -19,16 +19,16 @@ function PassportCover() {
         role="button"
         tabIndex={0}
         aria-label="Spin the globe"
-        onClick={() => setSpinning(true)}
+        onClick={() => {
+          if (spinning) return;
+          setSpinning(true);
+          window.setTimeout(() => setSpinning(false), 900);
+        }}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
+          if ((e.key === "Enter" || e.key === " ") && !spinning) {
             e.preventDefault();
             setSpinning(true);
-          }
-        }}
-        onAnimationEnd={(e) => {
-          if ((e.target as SVGElement).classList.contains("passport-crest")) {
-            setSpinning(false);
+            window.setTimeout(() => setSpinning(false), 900);
           }
         }}
       >
