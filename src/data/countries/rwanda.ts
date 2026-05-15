@@ -68,15 +68,10 @@ export const rwandaDescent: Path = {
       };
     }
     return {
-      tier: "possibly",
+      tier: "unlikely",
       reasons: [
-        "The diaspora track under Organic Law N° 002/2021.OL is open to persons of Rwandan origin and their descendants on an evidence-driven basis.",
-        "Without a recorded parent, grandparent, or great-grandparent link, you may still apply with corroborated testimonial or documentary proof of Rwandan origin.",
-      ],
-      needToVerify: [
-        diasporaScopeVerify,
-        civilRegistryCaveat,
-        dgieVerify,
+        "No Rwandan-linked ancestor recorded. The diaspora track under Organic Law N° 002/2021.OL is open to persons of Rwandan origin and their descendants, but requires at least one ancestor of Rwandan origin in the direct line.",
+        "If you have a Rwandan-origin ancestor not yet recorded, add them above and this path will re-evaluate.",
       ],
     };
   },
