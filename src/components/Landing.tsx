@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { LAST_UPDATED } from "../engine/lastUpdated";
 
 type Props = { onStart: () => void; onBrowse: () => void };
 
 function PassportCover() {
+  const [spinning, setSpinning] = useState(false);
   return (
     <div
       aria-hidden="true"
@@ -13,8 +15,22 @@ function PassportCover() {
 
       <svg
         viewBox="0 0 140 140"
-        className="passport-crest"
-        aria-hidden="true"
+        className={`passport-crest${spinning ? " spinning" : ""}`}
+        role="button"
+        tabIndex={0}
+        aria-label="Spin the globe"
+        onClick={() => setSpinning(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setSpinning(true);
+          }
+        }}
+        onAnimationEnd={(e) => {
+          if ((e.target as SVGElement).classList.contains("passport-crest")) {
+            setSpinning(false);
+          }
+        }}
       >
         <g fill="none" stroke="#e9c46a" strokeWidth={1.1} strokeLinecap="round">
           <circle cx="70" cy="70" r="48" />
@@ -104,7 +120,7 @@ export function Landing({ onStart, onBrowse }: Props) {
           </div>
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden md:block md:-translate-x-6 lg:-translate-x-10">
           <PassportCover />
         </div>
       </div>

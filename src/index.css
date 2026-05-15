@@ -74,6 +74,15 @@ input, select, textarea, button { font-family: inherit; }
   width: 56%;
   height: auto;
   filter: drop-shadow(0 1px 0 rgba(0,0,0,0.35));
+  cursor: pointer;
+  outline: none;
+}
+.passport-crest.spinning {
+  animation: passport-crest-spin 0.9s cubic-bezier(0.45, 0.05, 0.25, 1) 1;
+}
+@keyframes passport-crest-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .passport-meridian { animation: meridian-sweep 80s linear infinite; }
