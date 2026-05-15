@@ -18,7 +18,7 @@ type Props = {
 // "fatherFatherMother" -> "Your father's father's mother".
 function lineageTooltip(key: AncestorKey): string {
   const parts: string[] = [];
-  let rest = key as string;
+  let rest = (key as string).toLowerCase();
   while (rest.length > 0) {
     if (rest.startsWith("father")) {
       parts.push("father");
@@ -175,40 +175,7 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
         </label>
       )}
 
-      <label className="block text-sm">
-        <span className="text-muted">
-          Was this ancestor persecuted between 1933 and 1945 (Jewish, political, racial, religious, Roma/Sinti, or other Nazi-era persecution)? Relevant for Germany Art. 116(2) / §15 StAG and Austria §58c restoration paths.
-        </span>
-        <select
-          value={
-            a.persecutionStatus?.wasPersecuted1933_1945 === true
-              ? "yes"
-              : a.persecutionStatus?.wasPersecuted1933_1945 === false
-                ? "no"
-                : ""
-          }
-          onChange={(e) => {
-            const v = e.target.value;
-            if (!v) {
-              update({ persecutionStatus: undefined });
-            } else {
-              update({
-                persecutionStatus: {
-                  ...a.persecutionStatus,
-                  wasPersecuted1933_1945: v === "yes",
-                },
-              });
-            }
-          }}
-          className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
-        >
-          <option value="">- Don't know / not applicable -</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-      </label>
-
-      {a.birthCountry && (
+      {a.birthCountry && a.citizenshipsHeld?.some((c) => c !== a.birthCountry) && (
         <label className="block text-sm">
           <span className="text-muted">
             Did they later take up a different country's citizenship (give up or add to their original one)? If so, was that before or after {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born?
