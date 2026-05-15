@@ -57,7 +57,7 @@ export const portugalDescent: Path = {
   officialLinks: [
     {
       label: "Instituto dos Registos e do Notariado",
-      url: "https://justica.gov.pt/en",
+      url: "https://justica.gov.pt/Servicos/Nacionalidade",
     },
   ],
   estTimelineMonths: [12, 36],

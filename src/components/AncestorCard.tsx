@@ -1,4 +1,9 @@
-import type { Ancestor, AncestorKey, UserProfile } from "../types/profile";
+import type {
+  Ancestor,
+  AncestorKey,
+  HistoricalState,
+  UserProfile,
+} from "../types/profile";
 import { ANCESTOR_LABELS } from "../types/profile";
 import { COUNTRY_BY_CODE } from "../data/countries";
 import { CountrySelect } from "./CountrySelect";
@@ -8,6 +13,25 @@ type Props = {
   setProfile: (p: UserProfile) => void;
   keyName: AncestorKey;
 };
+
+// Plain-English unrolling of the ancestor key for the hover tooltip, e.g.
+// "fatherFatherMother" -> "Your father's father's mother".
+function lineageTooltip(key: AncestorKey): string {
+  const parts: string[] = [];
+  let rest = key as string;
+  while (rest.length > 0) {
+    if (rest.startsWith("father")) {
+      parts.push("father");
+      rest = rest.slice("father".length);
+    } else if (rest.startsWith("mother")) {
+      parts.push("mother");
+      rest = rest.slice("mother".length);
+    } else {
+      break;
+    }
+  }
+  return `Your ${parts.join("'s ")}`;
+}
 
 // "their child" in the naturalization question refers to the next generation
 // down in the user's direct line - for a grandparent that's the user's parent,
@@ -54,7 +78,16 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
   return (
     <div className="border border-border bg-panel p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="font-medium">{ANCESTOR_LABELS[keyName]}</h3>
+        <h3 className="font-medium flex items-center gap-1.5">
+          {ANCESTOR_LABELS[keyName]}
+          <span
+            className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-border text-muted text-[10px] cursor-help select-none"
+            title={lineageTooltip(keyName)}
+            aria-label={lineageTooltip(keyName)}
+          >
+            ?
+          </span>
+        </h3>
         {a.birthCountry && (
           <span className="text-xs text-muted">
             {COUNTRY_BY_CODE[a.birthCountry]?.flag}{" "}
@@ -71,6 +104,21 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
             value={a.birthCountry ?? ""}
             placeholder="- Unknown -"
             onChange={(code) => update({ birthCountry: code || undefined })}
+            className="mt-1"
+          />
+        </label>
+
+        <label className="block text-sm sm:col-span-2">
+          <span className="text-muted">
+            Citizenships they held (only fill in if different from country of birth — e.g. naturalized elsewhere, or inherited a citizenship by descent)
+          </span>
+          <CountrySelect
+            mode="multi"
+            value={a.citizenshipsHeld ?? []}
+            placeholder="- Same as country of birth -"
+            onChange={(codes) =>
+              update({ citizenshipsHeld: codes.length ? codes : undefined })
+            }
             className="mt-1"
           />
         </label>
@@ -96,7 +144,74 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
       {a.birthCountry && (
         <label className="block text-sm">
           <span className="text-muted">
-            Did they naturalize in another country before {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born?
+            If this ancestor was born in a defunct state (USSR, Yugoslavia, Czechoslovakia, Austria-Hungary, Ottoman Empire, etc.) before today's borders existed, select it. The modern country above is still used as the primary location.
+          </span>
+          <select
+            value={a.birthPlace?.historicalState ?? ""}
+            onChange={(e) => {
+              const v = e.target.value as HistoricalState | "";
+              update({
+                birthPlace: v
+                  ? { ...a.birthPlace, historicalState: v }
+                  : a.birthPlace?.cityOrRegion || a.birthPlace?.modernState
+                    ? { ...a.birthPlace, historicalState: undefined }
+                    : undefined,
+              });
+            }}
+            className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
+          >
+            <option value="">- Not applicable -</option>
+            <option value="USSR">USSR (Soviet Union)</option>
+            <option value="Yugoslavia">Yugoslavia</option>
+            <option value="Czechoslovakia">Czechoslovakia</option>
+            <option value="AustriaHungary">Austria-Hungary</option>
+            <option value="OttomanEmpire">Ottoman Empire</option>
+            <option value="MandatePalestine">Mandate Palestine</option>
+            <option value="BritishMandate">British Mandate (other)</option>
+            <option value="PrussianEmpire">Prussian Empire</option>
+            <option value="GermanEmpire">German Empire (pre-1918)</option>
+            <option value="Other">Other defunct state</option>
+          </select>
+        </label>
+      )}
+
+      <label className="block text-sm">
+        <span className="text-muted">
+          Was this ancestor persecuted between 1933 and 1945 (Jewish, political, racial, religious, Roma/Sinti, or other Nazi-era persecution)? Relevant for Germany Art. 116(2) / §15 StAG and Austria §58c restoration paths.
+        </span>
+        <select
+          value={
+            a.persecutionStatus?.wasPersecuted1933_1945 === true
+              ? "yes"
+              : a.persecutionStatus?.wasPersecuted1933_1945 === false
+                ? "no"
+                : ""
+          }
+          onChange={(e) => {
+            const v = e.target.value;
+            if (!v) {
+              update({ persecutionStatus: undefined });
+            } else {
+              update({
+                persecutionStatus: {
+                  ...a.persecutionStatus,
+                  wasPersecuted1933_1945: v === "yes",
+                },
+              });
+            }
+          }}
+          className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
+        >
+          <option value="">- Don't know / not applicable -</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+
+      {a.birthCountry && (
+        <label className="block text-sm">
+          <span className="text-muted">
+            Did they later take up a different country's citizenship (give up or add to their original one)? If so, was that before or after {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born?
           </span>
           <select
             value={a.naturalizedElsewhere?.yearRelativeToChildBirth ?? ""}
@@ -114,9 +229,9 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
             }
             className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
           >
-            <option value="">- Don't know / not applicable -</option>
-            <option value="before">Yes, before {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born</option>
-            <option value="after">Yes, but only after {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born</option>
+            <option value="">- Don't know / never naturalized elsewhere -</option>
+            <option value="before">Yes - became a citizen of another country BEFORE {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born</option>
+            <option value="after">Yes - but only AFTER {nextInLineLabel(keyName)} {keyName === "father" || keyName === "mother" ? "were" : "was"} born</option>
           </select>
         </label>
       )}

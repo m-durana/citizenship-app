@@ -130,7 +130,7 @@ export const portugalMarriage = marriagePath({
   links: [
     {
       label: "Instituto dos Registos e do Notariado",
-      url: "https://justica.gov.pt/en",
+      url: "https://justica.gov.pt/Servicos/Nacionalidade",
     },
     {
       label: "Consulate General of Portugal in Newark - Nationality by marriage",
@@ -493,7 +493,7 @@ export const japanMarriage = marriagePath({
   links: [
     {
       label: "Ministry of Justice - The Nationality Law (Article 7)",
-      url: "https://www.moj.go.jp/ENGLISH/information/tnl-01.html",
+      url: "https://www.moj.go.jp/EN/MINJI/minji78.html",
     },
     {
       label: "Japanese Law Translation - Nationality Act (official)",

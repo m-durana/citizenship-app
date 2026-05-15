@@ -66,8 +66,12 @@ export const czechiaDescent: Path = {
   ],
   officialLinks: [
     {
-      label: "Ministry of the Interior of the Czech Republic - Citizenship",
-      url: "https://www.mvcr.cz/mvcren/article/citizenship.aspx",
+      label: "Czech nationality law (Wikipedia overview)",
+      url: "https://en.wikipedia.org/wiki/Czech_nationality_law",
+    },
+    {
+      label: "Ministry of the Interior of the Czech Republic (English portal)",
+      url: "https://mv.gov.cz/mvcren/",
     },
   ],
   estTimelineMonths: [12, 24],

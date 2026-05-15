@@ -18,8 +18,62 @@ export type AncestorKey =
   | "motherMotherFather"
   | "motherMotherMother";
 
+export type HistoricalState =
+  | "USSR"
+  | "Yugoslavia"
+  | "Czechoslovakia"
+  | "AustriaHungary"
+  | "OttomanEmpire"
+  | "MandatePalestine"
+  | "BritishMandate"
+  | "PrussianEmpire"
+  | "GermanEmpire"
+  | "Other";
+
+export type CitizenshipMode =
+  | "birth"
+  | "descent"
+  | "naturalization"
+  | "automaticStateSuccession"
+  | "restoration"
+  | "loss"
+  | "renunciation"
+  | "revocation"
+  | "unknown";
+
+export type PersecutionBasis =
+  | "jewish"
+  | "political"
+  | "racial"
+  | "religious"
+  | "romaSinti"
+  | "other";
+
 export type Ancestor = {
   birthCountry?: string;
+  // Disambiguates ancestors born in defunct states (USSR, Yugoslavia,
+  // Czechoslovakia, Austria-Hungary, etc.). Country-evaluator code that needs
+  // a successor-state mapping (Polish/Lithuanian/Ukrainian/Israeli/etc.
+  // restoration routes) consults this in preference to birthCountry alone.
+  birthPlace?: {
+    cityOrRegion?: string;
+    historicalState?: HistoricalState;
+    modernState?: string;
+  };
+  // Citizenships the ancestor is known to have HELD (in addition to or instead
+  // of birth country). Lets us model cases where citizenship was acquired by
+  // descent or naturalization independent of birthplace — e.g. a parent born
+  // in Argentina who is a Swiss citizen because their own father was Swiss.
+  citizenshipsHeld?: string[];
+  // Ordered citizenship history for the Mitteleuropa restoration corridor.
+  // Optional and progressive — only ask in the UI when the engine detects a
+  // multi-state birthplace (Austria-Hungary, Czechoslovakia, USSR, etc.).
+  citizenshipTimeline?: Array<{
+    countryCode: string;
+    mode: CitizenshipMode;
+    startYear?: number;
+    endYear?: number | null;
+  }>;
   birthYear?: number;
   gender?: Gender;
   naturalizedElsewhere?: {
@@ -30,6 +84,18 @@ export type Ancestor = {
   jewish?: Tribool;
   persecutedByNazis?: Tribool;
   exiledSpanishCivilWar?: Tribool;
+  // Per-ancestor persecution status, used by the German §15 StAG / Art. 116(2)
+  // and Austrian §58c restoration paths. The eligibility hinges on the
+  // ancestor's status DURING 1933–1945, not on the descendant's current
+  // self-identification — so the per-ancestor record is the precise signal,
+  // while the existing profile-level heritage.naziPersecutionDescendant flag
+  // remains a coarse routing hint.
+  persecutionStatus?: {
+    wasPersecuted1933_1945: Tribool;
+    basis?: PersecutionBasis[];
+    fled?: Tribool;
+    fledYear?: number;
+  };
 };
 
 export type AncestorTree = Partial<Record<AncestorKey, Ancestor>>;

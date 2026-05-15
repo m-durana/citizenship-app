@@ -78,6 +78,25 @@ import { liberiaDescent } from "./liberia";
 import { capeVerdeDescent } from "./capeverde";
 import { eastTimorDescent } from "./easttimor";
 import { kosovoDescent } from "./kosovo";
+import { switzerlandDescent } from "./switzerland";
+import { franceDescent } from "./france";
+import { netherlandsDescent, netherlandsArt6Option } from "./netherlands";
+import { usaDescent } from "./usa";
+import { australiaDescent } from "./australia";
+import { newzealandDescent } from "./newzealand";
+import { southafricaDescent } from "./southafrica";
+import { japanDescent } from "./japan";
+import { swedenDescent } from "./sweden";
+import { norwayDescent } from "./norway";
+import { denmarkDescent } from "./denmark";
+import { finlandDescent } from "./finland";
+import { icelandDescent } from "./iceland";
+import { southkoreaDescent, southkoreaF4 } from "./southkorea";
+import { turkeyDescent, turkeyMaviKart } from "./turkey";
+import { indiaOCI } from "./indiaoci";
+import { rwandaDescent } from "./rwanda";
+import { ethiopiaYellowCard } from "./ethiopia";
+import { iranDescent } from "./iran";
 
 export const allPaths: Path[] = [
   irelandDescent,
@@ -158,4 +177,26 @@ export const allPaths: Path[] = [
   capeVerdeDescent,
   eastTimorDescent,
   kosovoDescent,
+  switzerlandDescent,
+  franceDescent,
+  netherlandsDescent,
+  netherlandsArt6Option,
+  usaDescent,
+  australiaDescent,
+  newzealandDescent,
+  southafricaDescent,
+  japanDescent,
+  swedenDescent,
+  norwayDescent,
+  denmarkDescent,
+  finlandDescent,
+  icelandDescent,
+  southkoreaDescent,
+  southkoreaF4,
+  turkeyDescent,
+  turkeyMaviKart,
+  indiaOCI,
+  rwandaDescent,
+  ethiopiaYellowCard,
+  iranDescent,
 ];

@@ -1,6 +1,16 @@
 import type { Path } from "../../types/path";
+import type { Ancestor } from "../../types/profile";
 import { parentsBornIn } from "../../engine/helpers";
 import { isTrue } from "../../engine/helpers";
+
+// True when the ancestor was persecuted 1933-1945 by any basis the §15 / Art.
+// 116(2) restoration path recognises. Prefers the per-ancestor field over the
+// older boolean `persecutedByNazis`.
+function wasPersecuted1933_1945(a: Ancestor): boolean {
+  if (a.persecutionStatus?.wasPersecuted1933_1945 === true) return true;
+  if (isTrue(a.persecutedByNazis)) return true;
+  return false;
+}
 
 export const germanyDescent: Path = {
   id: "de-descent",
@@ -77,15 +87,18 @@ export const germanyArticle116: Path = {
   shortDescription:
     "Descendants - at any depth - of Germans deprived of their citizenship between 30 January 1933 and 8 May 1945 on political, racial, or religious grounds may have it restored. The 2021 §15 StAG amendment closed gaps that the old Article 116(2) couldn't reach.",
   evaluate: (p) => {
-    if (isTrue(p.heritage.naziPersecutionDescendant)) {
-      return {
-        tier: "likely",
-        reasons: [
-          "You marked at least one ancestor as deprived of German citizenship by the Nazi regime (1933–1945).",
-          "Article 116(2) of the Basic Law restores citizenship to former Germans persecuted on political/racial/religious grounds and to their descendants - there is no generation limit.",
-          "Cases that don't fit Art. 116(2) (e.g. ancestors who emigrated and were never formally deprived) often qualify under §15 StAG (added Aug 2021).",
-        ],
-      };
+    const perAncestor = Object.entries(p.ancestors).find(
+      ([, a]) => a && wasPersecuted1933_1945(a as Ancestor),
+    );
+    if (perAncestor || isTrue(p.heritage.naziPersecutionDescendant)) {
+      const reasons = [
+        perAncestor
+          ? `You marked an ancestor (${perAncestor[0]}) as persecuted between 1933 and 1945.`
+          : "You marked at least one ancestor as deprived of German citizenship by the Nazi regime (1933-1945).",
+        "Article 116(2) of the Basic Law restores citizenship to former Germans persecuted on political/racial/religious grounds and to their descendants - there is no generation limit.",
+        "Cases that don't fit Art. 116(2) (e.g. ancestors who emigrated and were never formally deprived) often qualify under §15 StAG (added Aug 2021).",
+      ];
+      return { tier: "likely", reasons };
     }
     return {
       tier: "unlikely",
