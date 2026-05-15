@@ -1,10 +1,32 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { LAST_UPDATED } from "../engine/lastUpdated";
 
 type Props = { onStart: () => void; onBrowse: () => void };
 
+const SPIN_BOOST = 90; // 80s cycle × ~1.1 = ~one full sweep in 0.9s wall time
+const SPIN_DURATION_MS = 900;
+
 function PassportCover() {
+  const svgRef = useRef<SVGSVGElement | null>(null);
   const [spinning, setSpinning] = useState(false);
+
+  const triggerSpin = () => {
+    if (spinning) return;
+    const svg = svgRef.current;
+    if (!svg) return;
+    const anims = svg.getAnimations({ subtree: true });
+    anims.forEach((a) => {
+      a.playbackRate = SPIN_BOOST;
+    });
+    setSpinning(true);
+    window.setTimeout(() => {
+      anims.forEach((a) => {
+        a.playbackRate = 1;
+      });
+      setSpinning(false);
+    }, SPIN_DURATION_MS);
+  };
+
   return (
     <div
       aria-hidden="true"
@@ -14,21 +36,17 @@ function PassportCover() {
       <div className="passport-passport">Passport</div>
 
       <svg
+        ref={svgRef}
         viewBox="0 0 140 140"
-        className={`passport-crest${spinning ? " spinning" : ""}`}
+        className="passport-crest"
         role="button"
         tabIndex={0}
         aria-label="Spin the globe"
-        onClick={() => {
-          if (spinning) return;
-          setSpinning(true);
-          window.setTimeout(() => setSpinning(false), 900);
-        }}
+        onClick={triggerSpin}
         onKeyDown={(e) => {
-          if ((e.key === "Enter" || e.key === " ") && !spinning) {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            setSpinning(true);
-            window.setTimeout(() => setSpinning(false), 900);
+            triggerSpin();
           }
         }}
       >
