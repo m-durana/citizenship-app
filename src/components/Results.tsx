@@ -1,8 +1,20 @@
 import { useMemo, useState } from "react";
 import { evaluateProfile, groupByTier } from "../engine/evaluate";
 import { LAST_UPDATED } from "../engine/lastUpdated";
-import type { EvaluatedPath, Tier } from "../types/path";
+import type { EvaluatedPath, Likelihood, Tier } from "../types/path";
 import { TIER_LABEL } from "../types/path";
+
+const LAWYER_NEEDED_LABEL: Record<Likelihood, string> = {
+  yes: "yes",
+  recommended: "recommended",
+  optional: "probably not, but can help",
+  no: "no",
+  unknown: "unknown",
+};
+
+function lawyerNeededLabel(value: Likelihood): string {
+  return LAWYER_NEEDED_LABEL[value] ?? value;
+}
 import type { UserProfile } from "../types/profile";
 import { isEU } from "../data/countries";
 
@@ -267,7 +279,7 @@ function PathCard({ path, tier }: { path: EvaluatedPath; tier: Tier }) {
                 <li>
                   Immigration lawyer typically needed:{" "}
                   <span className="text-ink">
-                    {path.practical.lawyerTypicallyNeeded}
+                    {lawyerNeededLabel(path.practical.lawyerTypicallyNeeded)}
                   </span>
                   .
                 </li>
