@@ -2,6 +2,7 @@ import type {
   Ancestor,
   AncestorKey,
   AncestorTree,
+  HistoricalState,
   Tribool,
   UserProfile,
 } from "../types/profile";
@@ -43,14 +44,36 @@ const SUCCESSOR_STATES: Record<string, string[]> = {
   Other: [],
 };
 
+// Parallel mapping from the new "X-" pseudo-codes used in COUNTRIES for defunct
+// states to the legacy `HistoricalState` string. Lets birthPlaceMapsTo accept
+// either form: an ancestor whose birthCountry is "X-SU" is treated identically
+// to one tagged with the legacy historicalState: "USSR".
+const DEFUNCT_CODE_TO_HISTORICAL: Record<string, HistoricalState> = {
+  "X-SU": "USSR",
+  "X-YU": "Yugoslavia",
+  "X-CS": "Czechoslovakia",
+  "X-AH": "AustriaHungary",
+  "X-OT": "OttomanEmpire",
+  "X-MP": "MandatePalestine",
+  "X-BM": "BritishMandate",
+  "X-PR": "PrussianEmpire",
+  "X-DR": "GermanEmpire",
+};
+
 // True when the ancestor's birthplace plausibly maps to the given modern
-// country code via historicalState. Used by evaluators (Poland, Lithuania,
-// Israel, etc.) that need to honour ancestors marked "born in USSR/Yugoslavia/
-// Austria-Hungary" without requiring the user to guess the modern country.
+// country code via historicalState OR via a defunct-state X- pseudo-code in
+// birthCountry. Used by evaluators (Poland, Lithuania, Israel, etc.) that
+// need to honour ancestors marked "born in USSR/Yugoslavia/Austria-Hungary"
+// without requiring the user to guess the modern country.
 export function birthPlaceMapsTo(a: Ancestor, countryCode: string): boolean {
   const hs = a.birthPlace?.historicalState;
-  if (!hs) return false;
-  return SUCCESSOR_STATES[hs]?.includes(countryCode) ?? false;
+  if (hs && SUCCESSOR_STATES[hs]?.includes(countryCode)) return true;
+  const bc = a.birthCountry;
+  if (bc && bc.startsWith("X-")) {
+    const mapped = DEFUNCT_CODE_TO_HISTORICAL[bc];
+    if (mapped && SUCCESSOR_STATES[mapped]?.includes(countryCode)) return true;
+  }
+  return false;
 }
 
 // Looser variant of ancestorLinkedTo that also accepts a historicalState ->

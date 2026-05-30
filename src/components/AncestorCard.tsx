@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import type {
   Ancestor,
   AncestorKey,
-  HistoricalState,
   UserProfile,
 } from "../types/profile";
 import { ANCESTOR_LABELS } from "../types/profile";
@@ -164,42 +163,41 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
             className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
             placeholder="e.g. 1925"
           />
+          {(() => {
+            const country = a.birthCountry ? COUNTRY_BY_CODE[a.birthCountry] : undefined;
+            const y = a.birthYear;
+            if (!country || typeof y !== "number") return null;
+            const nameList = (codes?: string[]) =>
+              (codes ?? [])
+                .map((c) => COUNTRY_BY_CODE[c]?.name)
+                .filter(Boolean)
+                .join(", ");
+            if (country.existedFrom != null && y < country.existedFrom) {
+              const alt = nameList(country.predecessorCodes);
+              return (
+                <p className="mt-1 text-xs text-amber-500">
+                  Warning: {country.name} did not exist in {y}.{" "}
+                  {alt
+                    ? `You may have meant ${alt} or this could be a typo.`
+                    : `This could be a typo.`}
+                </p>
+              );
+            }
+            if (country.existedUntil != null && y > country.existedUntil) {
+              const alt = nameList(country.successorCodes);
+              return (
+                <p className="mt-1 text-xs text-amber-500">
+                  Warning: {country.name} ceased to exist in {country.existedUntil}.{" "}
+                  {alt
+                    ? `You may have meant ${alt} or this could be a typo.`
+                    : `This could be a typo.`}
+                </p>
+              );
+            }
+            return null;
+          })()}
         </label>
       </div>
-
-      {a.birthCountry && (
-        <label className="block text-sm">
-          <span className="text-muted">
-            If this ancestor was born in a defunct state (USSR, Yugoslavia, Czechoslovakia, Austria-Hungary, Ottoman Empire, etc.) before today's borders existed, select it. The modern country above is still used as the primary location.
-          </span>
-          <select
-            value={a.birthPlace?.historicalState ?? ""}
-            onChange={(e) => {
-              const v = e.target.value as HistoricalState | "";
-              update({
-                birthPlace: v
-                  ? { ...a.birthPlace, historicalState: v }
-                  : a.birthPlace?.cityOrRegion || a.birthPlace?.modernState
-                    ? { ...a.birthPlace, historicalState: undefined }
-                    : undefined,
-              });
-            }}
-            className="mt-1 w-full bg-bg border border-border px-3 h-10 text-sm"
-          >
-            <option value="">- Not applicable -</option>
-            <option value="USSR">USSR (Soviet Union)</option>
-            <option value="Yugoslavia">Yugoslavia</option>
-            <option value="Czechoslovakia">Czechoslovakia</option>
-            <option value="AustriaHungary">Austria-Hungary</option>
-            <option value="OttomanEmpire">Ottoman Empire</option>
-            <option value="MandatePalestine">Mandate Palestine</option>
-            <option value="BritishMandate">British Mandate (other)</option>
-            <option value="PrussianEmpire">Prussian Empire</option>
-            <option value="GermanEmpire">German Empire (pre-1918)</option>
-            <option value="Other">Other defunct state</option>
-          </select>
-        </label>
-      )}
 
       {a.birthCountry && a.citizenshipsHeld?.some((c) => c !== a.birthCountry) && (
         <label className="block text-sm">
