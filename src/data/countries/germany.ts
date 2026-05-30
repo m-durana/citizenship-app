@@ -24,10 +24,18 @@ export const germanyDescent: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "DE");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInDE = parent.birthCountry === "DE";
+      const holdsDE = parent.citizenshipsHeld?.includes("DE");
+      const description = bornInDE
+        ? "German-born parent"
+        : holdsDE
+          ? "parent who holds (or held) German citizenship"
+          : "parent linked to Germany";
       return {
         tier: "likely",
         reasons: [
-          `You have a German-born parent (${par[0].key}).`,
+          `You have a ${description} (${par[0].key}).`,
           "If they were a German citizen at the time of your birth, you acquired German citizenship automatically.",
         ],
         needToVerify: [

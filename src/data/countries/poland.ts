@@ -20,10 +20,18 @@ export const polandDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "PL");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInPL = a.birthCountry === "PL";
+      const holdsPL = a.citizenshipsHeld?.includes("PL");
+      const description = bornInPL
+        ? "Poland-born ancestor"
+        : holdsPL
+          ? "ancestor who holds (or held) Polish citizenship"
+          : "ancestor linked to Poland";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Poland-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Polish citizenship descends without a generation cap if the chain is intact.",
         ],
         needToVerify: [

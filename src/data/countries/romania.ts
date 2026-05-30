@@ -20,10 +20,18 @@ export const romaniaDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "RO");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInRO = a.birthCountry === "RO";
+      const holdsRO = a.citizenshipsHeld?.includes("RO");
+      const description = bornInRO
+        ? "Romanian-born ancestor"
+        : holdsRO
+          ? "ancestor who holds (or held) Romanian citizenship"
+          : "ancestor linked to Romania";
       const tier = par.length ? "likely" : "possibly";
       return {
         tier,
-        reasons: [`You have a Romanian-born ancestor (${closest.key}).`],
+        reasons: [`You have a ${description} (${closest.key}).`],
         needToVerify: tier === "possibly"
           ? [
               "Your ancestor was a Romanian citizen who lost citizenship involuntarily (often via post-WWII border changes / forced emigration).",

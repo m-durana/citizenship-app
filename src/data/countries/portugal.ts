@@ -17,16 +17,32 @@ export const portugalDescent: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "PT");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInPT = parent.birthCountry === "PT";
+      const holdsPT = parent.citizenshipsHeld?.includes("PT");
+      const description = bornInPT
+        ? "Portuguese-born parent"
+        : holdsPT
+          ? "parent who holds (or held) Portuguese citizenship"
+          : "parent linked to Portugal";
       return {
         tier: "likely",
-        reasons: [`You have a Portuguese-born parent (${par[0].key}).`],
+        reasons: [`You have a ${description} (${par[0].key}).`],
       };
     }
     const gp = grandparentsBornIn(p, "PT");
     if (gp.length) {
+      const grand = gp[0].ancestor;
+      const bornInPT = grand.birthCountry === "PT";
+      const holdsPT = grand.citizenshipsHeld?.includes("PT");
+      const description = bornInPT
+        ? "Portuguese-born grandparent"
+        : holdsPT
+          ? "grandparent who holds (or held) Portuguese citizenship"
+          : "grandparent linked to Portugal";
       return {
         tier: "likely",
-        reasons: [`You have a Portuguese-born grandparent (${gp[0].key}).`],
+        reasons: [`You have a ${description} (${gp[0].key}).`],
         needToVerify: [
           "You can pass an A2 Portuguese language exam (CIPLE).",
           "You can produce the grandparent's Portuguese birth certificate from the Civil Registry.",

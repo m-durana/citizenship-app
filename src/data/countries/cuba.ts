@@ -13,10 +13,18 @@ export const cubaDescent: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "CU");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInCU = parent.birthCountry === "CU";
+      const holdsCU = parent.citizenshipsHeld?.includes("CU");
+      const description = bornInCU
+        ? "Cuba-born parent"
+        : holdsCU
+          ? "parent who holds (or held) Cuban citizenship"
+          : "parent linked to Cuba";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Cuba-born parent (${par[0].key}).`,
+          `You have a ${description} (${par[0].key}).`,
           "Cuban descent claims historically require establishing residency in Cuba and obtaining a Certificate of Nationality.",
         ],
         needToVerify: [

@@ -15,10 +15,18 @@ export const albaniaEthnicOrigin: Path = {
     const ancestors = ancestorsBornIn(p, "AL");
     if (par.length || ancestors.length) {
       const closest = par[0] ?? ancestors[0];
+      const a = closest.ancestor;
+      const bornInAL = a.birthCountry === "AL";
+      const holdsAL = a.citizenshipsHeld?.includes("AL");
+      const description = bornInAL
+        ? "Albania-born ancestor"
+        : holdsAL
+          ? "ancestor who holds (or held) Albanian citizenship"
+          : "ancestor linked to Albania";
       return {
         tier: "possibly",
         reasons: [
-          `You have an Albania-born ancestor (${closest.key}).`,
+          `You have an ${description} (${closest.key}).`,
           "Law 113/2020 has no firm generational cap for persons of Albanian origin.",
           "Final approval is by Presidential Decree.",
         ],

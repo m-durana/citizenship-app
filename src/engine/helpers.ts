@@ -123,6 +123,64 @@ export function greatGrandparentsBornIn(
     .filter((x) => ancestorLinkedToOrFromSuccessor(x.ancestor, countryCode));
 }
 
+// Strict variants: filter purely by `birthCountry === code`. Use these for
+// regimes where the law actually keys on the ancestor's birthplace (e.g. UK
+// Ancestry Visa, Uruguay Law 19.362, Philippines, Venezuela, Taiwan, Kosovo,
+// East Timor, Ghana). Do NOT use for citizenship-transmission regimes (Italy,
+// Portugal, Malta, France, Germany) where citizenship-of-ancestor is what
+// matters and birthplace is incidental.
+export function parentsBornInStrict(
+  profile: UserProfile,
+  countryCode: string,
+): AncestorWithKey[] {
+  return PARENT_KEYS.map((k) => ({
+    key: k,
+    ancestor: profile.ancestors[k],
+  }))
+    .filter((x): x is AncestorWithKey => !!x.ancestor)
+    .filter((x) => x.ancestor.birthCountry === countryCode);
+}
+
+export function grandparentsBornInStrict(
+  profile: UserProfile,
+  countryCode: string,
+): AncestorWithKey[] {
+  return GRANDPARENT_KEYS.map((k) => ({
+    key: k,
+    ancestor: profile.ancestors[k],
+  }))
+    .filter((x): x is AncestorWithKey => !!x.ancestor)
+    .filter((x) => x.ancestor.birthCountry === countryCode);
+}
+
+export function greatGrandparentsBornInStrict(
+  profile: UserProfile,
+  countryCode: string,
+): AncestorWithKey[] {
+  return GREAT_GRANDPARENT_KEYS.map((k) => ({
+    key: k,
+    ancestor: profile.ancestors[k],
+  }))
+    .filter((x): x is AncestorWithKey => !!x.ancestor)
+    .filter((x) => x.ancestor.birthCountry === countryCode);
+}
+
+export function ancestorsBornInStrict(
+  profile: UserProfile,
+  countryCode: string,
+): AncestorWithKey[] {
+  const out: AncestorWithKey[] = [];
+  for (const [key, ancestor] of Object.entries(profile.ancestors) as [
+    AncestorKey,
+    Ancestor,
+  ][]) {
+    if (ancestor && ancestor.birthCountry === countryCode) {
+      out.push({ key, ancestor });
+    }
+  }
+  return out;
+}
+
 export function isTrue(t: Tribool | undefined): boolean {
   return t === true;
 }

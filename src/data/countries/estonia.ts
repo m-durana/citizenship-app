@@ -20,10 +20,18 @@ export const estoniaRestoration: Path = {
     const ggp = greatGrandparentsBornIn(p, "EE");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInEE = a.birthCountry === "EE";
+      const holdsEE = a.citizenshipsHeld?.includes("EE");
+      const description = bornInEE
+        ? "Estonia-born ancestor"
+        : holdsEE
+          ? "ancestor who holds (or held) Estonian citizenship"
+          : "ancestor linked to Estonia";
       return {
         tier: "likely",
         reasons: [
-          `You have an Estonia-born ancestor (${closest.key}).`,
+          `You have an ${description} (${closest.key}).`,
           "If the ancestor (or a forebear) held Estonian citizenship as of 16 June 1940 and the line was not voluntarily broken after 1991, you are recognised as a citizen by origin.",
         ],
         needToVerify: [

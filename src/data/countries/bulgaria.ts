@@ -18,17 +18,23 @@ export const bulgariaDescent: Path = {
     const par = parentsBornIn(p, "BG");
     const gp = grandparentsBornIn(p, "BG");
     const ggp = greatGrandparentsBornIn(p, "BG");
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "BG") return `${role} born in Bulgaria`;
+      if (a.citizenshipsHeld?.includes("BG"))
+        return `${role} who holds (or held) Bulgarian citizenship`;
+      return `${role} of Bulgarian origin`;
+    };
     if (par.length) {
       return {
         tier: "likely",
-        reasons: [`You have a parent born in Bulgaria (${par[0].key}).`],
+        reasons: [`You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`],
       };
     }
     if (gp.length || ggp.length) {
       const closest = gp[0] ?? ggp[0];
       return {
         tier: "possibly",
-        reasons: [`You have a Bulgaria-born ancestor (${closest.key}).`],
+        reasons: [`You have an ${describe(closest.ancestor, "ancestor")} (${closest.key}).`],
         needToVerify: [
           "You can document Bulgarian origin (e.g. ancestor's Bulgarian citizenship or ethnic-Bulgarian status).",
         ],

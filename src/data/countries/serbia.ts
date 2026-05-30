@@ -16,11 +16,17 @@ export const serbiaArticle23: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "RS");
     const ancestors = ancestorsBornIn(p, "RS");
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "RS") return `Serbia-born ${role}`;
+      if (a.citizenshipsHeld?.includes("RS"))
+        return `${role} who holds (or held) Serbian citizenship`;
+      return `${role} of Serbian origin`;
+    };
     if (par.length) {
       return {
         tier: "likely",
         reasons: [
-          `You have a Serbia-born parent (${par[0].key}).`,
+          `You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`,
           "Article 23 admits members of the Serbian people abroad without requiring residence in Serbia, language test, or civics test.",
         ],
         needToVerify: [
@@ -34,7 +40,7 @@ export const serbiaArticle23: Path = {
       return {
         tier: "possibly",
         reasons: [
-          `You have a Serbia-born ancestor (${closest.key}).`,
+          `You have an ${describe(closest.ancestor, "ancestor")} (${closest.key}).`,
           "Article 23 has no firm generational cap and a permissive evidentiary standard.",
         ],
         needToVerify: [
@@ -47,7 +53,7 @@ export const serbiaArticle23: Path = {
     return {
       tier: "unlikely",
       reasons: [
-        "No Serbia-born ancestor recorded and no ethnic-Serb indicator captured.",
+        "No ancestor linked to Serbia recorded and no ethnic-Serb indicator captured.",
         "Article 23 still allows ethnic-Serb applicants from outside the territory; if you are an ethnic Serb, contact a Serbian consulate to discuss documentary support.",
       ],
     };

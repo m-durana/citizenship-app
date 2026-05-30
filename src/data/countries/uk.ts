@@ -1,5 +1,5 @@
 import type { Path } from "../../types/path";
-import { grandparentsBornIn } from "../../engine/helpers";
+import { grandparentsBornInStrict } from "../../engine/helpers";
 
 const COMMONWEALTH = new Set([
   "GB", "AU", "NZ", "CA", "IN", "ZA", "JM", "KE", "NG", "BD", "PK", "SG", "MY",
@@ -16,7 +16,7 @@ export const ukAncestryVisa: Path = {
   shortDescription:
     "Commonwealth citizens with a UK-born grandparent can apply for the UK Ancestry Visa - a 5-year work visa leading to Indefinite Leave to Remain and, after 1 more year, British citizenship.",
   evaluate: (p) => {
-    const ukGp = grandparentsBornIn(p, "GB");
+    const ukGp = grandparentsBornInStrict(p, "GB");
     const isCommonwealth = p.self.currentCitizenships.some((c) =>
       COMMONWEALTH.has(c),
     );

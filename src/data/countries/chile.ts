@@ -11,19 +11,25 @@ export const chileDescent: Path = {
   shortDescription:
     "Article 10 of Chile's 1980 Constitution recognises derivative nationality for children born abroad to a Chilean parent or grandparent. Chain integrity (whether the parent ever claimed Chilean nationality) is the operative caveat.",
   evaluate: (p) => {
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "CL") return `Chile-born ${role}`;
+      if (a.citizenshipsHeld?.includes("CL"))
+        return `${role} who holds (or held) Chilean citizenship`;
+      return `${role} linked to Chile`;
+    };
     const par = parentsBornIn(p, "CL");
     const gp = grandparentsBornIn(p, "CL");
     if (par.length) {
       return {
         tier: "likely",
-        reasons: [`You have a Chile-born parent (${par[0].key}).`],
+        reasons: [`You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`],
       };
     }
     if (gp.length) {
       return {
         tier: "possibly",
         reasons: [
-          `You have a Chile-born grandparent (${gp[0].key}).`,
+          `You have a ${describe(gp[0].ancestor, "grandparent")} (${gp[0].key}).`,
           "Article 10 reaches grandparent-anchored claims, but the chain may be considered broken if the parent never claimed or registered Chilean nationality.",
         ],
         needToVerify: [

@@ -1,9 +1,9 @@
 import type { Path } from "../../types/path";
 import {
-  ancestorsBornIn,
-  grandparentsBornIn,
-  greatGrandparentsBornIn,
-  parentsBornIn,
+  ancestorsBornInStrict,
+  grandparentsBornInStrict,
+  greatGrandparentsBornInStrict,
+  parentsBornInStrict,
 } from "../../engine/helpers";
 
 export const maltaGrandparent: Path = {
@@ -16,10 +16,10 @@ export const maltaGrandparent: Path = {
   shortDescription:
     "The 2007 amendment to the Maltese Citizenship Act lets persons born outside Malta register as citizens if they descend in direct line from an ascendant born in Malta whose parent was also born in Malta. A hard cliff applies on 1 August 2028 for parent-must-still-be-alive cases.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "MT");
-    const gp = grandparentsBornIn(p, "MT");
-    const ggp = greatGrandparentsBornIn(p, "MT");
-    const anyMt = ancestorsBornIn(p, "MT");
+    const par = parentsBornInStrict(p, "MT");
+    const gp = grandparentsBornInStrict(p, "MT");
+    const ggp = greatGrandparentsBornInStrict(p, "MT");
+    const anyMt = ancestorsBornInStrict(p, "MT");
     if (par.length) {
       return {
         tier: "likely",

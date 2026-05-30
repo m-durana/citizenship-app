@@ -78,9 +78,17 @@ export const luxembourgDescent: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "LU");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInLU = parent.birthCountry === "LU";
+      const holdsLU = parent.citizenshipsHeld?.includes("LU");
+      const description = bornInLU
+        ? "Luxembourg-born parent"
+        : holdsLU
+          ? "parent who holds (or held) Luxembourg citizenship"
+          : "parent linked to Luxembourg";
       return {
         tier: "likely",
-        reasons: [`You have a Luxembourg-born parent (${par[0].key}).`],
+        reasons: [`You have a ${description} (${par[0].key}).`],
         needToVerify: [
           "Your parent was a Luxembourg citizen at the time of your birth.",
         ],

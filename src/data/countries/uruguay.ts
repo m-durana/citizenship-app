@@ -1,5 +1,8 @@
 import type { Path } from "../../types/path";
-import { grandparentsBornIn, parentsBornIn } from "../../engine/helpers";
+import {
+  grandparentsBornInStrict,
+  parentsBornInStrict,
+} from "../../engine/helpers";
 
 export const uruguayDescent: Path = {
   id: "uy-descent",
@@ -11,8 +14,8 @@ export const uruguayDescent: Path = {
   shortDescription:
     "Law 19.362 (2015) recognises children and grandchildren of Uruguayan natural citizens born abroad as natural citizens, subject to meeting at least two of the Article 4 connection conditions. Reach stops at grandchild.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "UY");
-    const gp = grandparentsBornIn(p, "UY");
+    const par = parentsBornInStrict(p, "UY");
+    const gp = grandparentsBornInStrict(p, "UY");
     if (par.length) {
       return {
         tier: "likely",

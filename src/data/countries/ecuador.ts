@@ -1,8 +1,8 @@
 import type { Path } from "../../types/path";
 import {
-  grandparentsBornIn,
-  greatGrandparentsBornIn,
-  parentsBornIn,
+  grandparentsBornInStrict,
+  greatGrandparentsBornInStrict,
+  parentsBornInStrict,
 } from "../../engine/helpers";
 
 export const ecuadorDescent: Path = {
@@ -15,9 +15,9 @@ export const ecuadorDescent: Path = {
   shortDescription:
     "Article 7 of Ecuador's 2008 Constitution extends birthright nationality to children, grandchildren, and great-grandchildren of native-born Ecuadorians.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "EC");
-    const gp = grandparentsBornIn(p, "EC");
-    const ggp = greatGrandparentsBornIn(p, "EC");
+    const par = parentsBornInStrict(p, "EC");
+    const gp = grandparentsBornInStrict(p, "EC");
+    const ggp = greatGrandparentsBornInStrict(p, "EC");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
       return {

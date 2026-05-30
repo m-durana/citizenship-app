@@ -1,5 +1,5 @@
 import type { Path } from "../../types/path";
-import { parentsBornIn } from "../../engine/helpers";
+import { parentsBornInStrict } from "../../engine/helpers";
 
 export const philippinesRA9225: Path = {
   id: "ph-ra-9225",
@@ -11,7 +11,7 @@ export const philippinesRA9225: Path = {
   shortDescription:
     "Republic Act 9225 (2003) lets former natural-born Filipinos who lost citizenship by foreign naturalisation reacquire Philippine citizenship by Oath of Allegiance at a Philippine consulate. Minor unmarried children may be derivatively included.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "PH");
+    const par = parentsBornInStrict(p, "PH");
     if (par.length) {
       return {
         tier: "possibly",

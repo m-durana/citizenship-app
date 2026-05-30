@@ -19,10 +19,18 @@ export const belgiumDescent: Path = {
     const gp = grandparentsBornIn(p, "BE");
     const anyBe = ancestorsBornIn(p, "BE");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInBE = parent.birthCountry === "BE";
+      const holdsBE = parent.citizenshipsHeld?.includes("BE");
+      const description = bornInBE
+        ? "Belgium-born parent"
+        : holdsBE
+          ? "parent who holds (or held) Belgian nationality"
+          : "parent linked to Belgium";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Belgium-born parent (${par[0].key}).`,
+          `You have a ${description} (${par[0].key}).`,
           "Belgian nationality transmits parent-to-child only when the Belgian parent properly attributed nationality through consular declaration within the statutory window.",
         ],
         needToVerify: [
@@ -37,7 +45,7 @@ export const belgiumDescent: Path = {
         tier: "unlikely",
         reasons: [
           "Belgium has no general grandparent-descent route.",
-          "If your Belgian-born grandparent's child (your parent) was not formally attributed Belgian nationality, the chain is broken.",
+          "If the Belgian grandparent's child (your parent) was not formally attributed Belgian nationality, the chain is broken.",
         ],
       };
     }

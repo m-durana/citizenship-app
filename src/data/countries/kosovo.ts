@@ -13,10 +13,18 @@ export const kosovoDescent: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "XK");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInXK = parent.birthCountry === "XK";
+      const holdsXK = parent.citizenshipsHeld?.includes("XK");
+      const description = bornInXK
+        ? "Kosovo-born parent"
+        : holdsXK
+          ? "parent who holds (or held) Kosovan citizenship"
+          : "parent linked to Kosovo";
       return {
         tier: "likely",
         reasons: [
-          `You have a Kosovo-born parent (${par[0].key}).`,
+          `You have a ${description} (${par[0].key}).`,
           "Standard descent runs through a Kosovan-citizen parent.",
         ],
         needToVerify: [
@@ -27,7 +35,7 @@ export const kosovoDescent: Path = {
     return {
       tier: "unlikely",
       reasons: [
-        "No Kosovo-born parent recorded.",
+        "No parent linked to Kosovo recorded.",
         "Descent is parent-line, not grandparent. Diaspora reacquisition (under the 2024 amendments) is for those who previously held Kosovan citizenship and renounced it.",
       ],
     };

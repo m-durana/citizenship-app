@@ -21,9 +21,17 @@ export const armeniaDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "AM");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInAM = a.birthCountry === "AM";
+      const holdsAM = a.citizenshipsHeld?.includes("AM");
+      const description = bornInAM
+        ? "Armenia-born ancestor"
+        : holdsAM
+          ? "ancestor who holds (or held) Armenian citizenship"
+          : "ancestor linked to Armenia";
       return {
         tier: "likely",
-        reasons: [`You have an Armenia-born ancestor (${closest.key}).`],
+        reasons: [`You have an ${description} (${closest.key}).`],
         needToVerify: [
           "Documentary proof of Armenian ethnicity (church records, baptismal certificates, family records).",
         ],

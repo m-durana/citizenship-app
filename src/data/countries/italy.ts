@@ -22,16 +22,32 @@ export const italyDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "IT");
 
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInIT = parent.birthCountry === "IT";
+      const holdsIT = parent.citizenshipsHeld?.includes("IT");
+      const description = bornInIT
+        ? "Italian-born parent"
+        : holdsIT
+          ? "parent who holds (or held) Italian citizenship"
+          : "parent linked to Italy";
       return {
         tier: "likely",
-        reasons: [`You have an Italian-born parent (${par[0].key}).`],
+        reasons: [`You have a ${description} (${par[0].key}).`],
       };
     }
     if (gp.length) {
+      const grand = gp[0].ancestor;
+      const bornInIT = grand.birthCountry === "IT";
+      const holdsIT = grand.citizenshipsHeld?.includes("IT");
+      const description = bornInIT
+        ? "Italian-born grandparent"
+        : holdsIT
+          ? "grandparent who holds (or held) Italian citizenship"
+          : "grandparent linked to Italy";
       return {
         tier: "likely",
         reasons: [
-          `You have an Italian-born grandparent (${gp[0].key}).`,
+          `You have a ${description} (${gp[0].key}).`,
           "Two-generation eligibility is preserved under Law 74/2025.",
         ],
         needToVerify: [
@@ -41,10 +57,18 @@ export const italyDescent: Path = {
       };
     }
     if (ggp.length) {
+      const great = ggp[0].ancestor;
+      const bornInIT = great.birthCountry === "IT";
+      const holdsIT = great.citizenshipsHeld?.includes("IT");
+      const description = bornInIT
+        ? "Italian-born great-grandparent"
+        : holdsIT
+          ? "great-grandparent who holds (or held) Italian citizenship"
+          : "great-grandparent linked to Italy";
       return {
         tier: "unlikely",
         reasons: [
-          `You have an Italian-born great-grandparent (${ggp[0].key}), but Law 74/2025 (effective 24 May 2025) cut jure sanguinis to two generations.`,
+          `You have a ${description} (${ggp[0].key}), but Law 74/2025 (effective 24 May 2025) cut jure sanguinis to two generations.`,
           "Italy's Constitutional Court upheld this limit on 12 Mar 2026.",
           "Exception: applications filed (or appointments confirmed) before 23:59 Rome time on 27 Mar 2025 are evaluated under the prior unlimited-generation rules.",
         ],

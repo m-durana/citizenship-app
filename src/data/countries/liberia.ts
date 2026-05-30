@@ -15,10 +15,18 @@ export const liberiaDescent: Path = {
     const ancestors = ancestorsBornIn(p, "LR");
     if (par.length || ancestors.length) {
       const closest = par[0] ?? ancestors[0];
+      const a = closest.ancestor;
+      const bornInLR = a.birthCountry === "LR";
+      const holdsLR = a.citizenshipsHeld?.includes("LR");
+      const description = bornInLR
+        ? "Liberia-born ancestor"
+        : holdsLR
+          ? "ancestor who holds (or held) Liberian citizenship"
+          : "ancestor linked to Liberia";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Liberia-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Liberian descent runs through a Liberian-citizen ancestor; the 2022 amendment lets former Liberians who lost citizenship by foreign naturalisation reclaim it.",
         ],
         needToVerify: [

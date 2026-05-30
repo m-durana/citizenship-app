@@ -1,8 +1,8 @@
 import type { Path } from "../../types/path";
 import {
-  grandparentsBornIn,
-  greatGrandparentsBornIn,
-  parentsBornIn,
+  grandparentsBornInStrict,
+  greatGrandparentsBornInStrict,
+  parentsBornInStrict,
 } from "../../engine/helpers";
 
 export const irelandDescent: Path = {
@@ -15,7 +15,7 @@ export const irelandDescent: Path = {
   shortDescription:
     "Children of an Irish citizen, and grandchildren of an Irish-born ancestor, are entitled to Irish citizenship via the Foreign Births Register. Great-grandchildren may qualify if their parent registered before they were born.",
   evaluate: (profile) => {
-    const irishParents = parentsBornIn(profile, "IE");
+    const irishParents = parentsBornInStrict(profile, "IE");
     if (irishParents.length > 0) {
       return {
         tier: "likely",
@@ -26,7 +26,7 @@ export const irelandDescent: Path = {
       };
     }
 
-    const irishGrandparents = grandparentsBornIn(profile, "IE");
+    const irishGrandparents = grandparentsBornInStrict(profile, "IE");
     if (irishGrandparents.length > 0) {
       return {
         tier: "likely",
@@ -41,7 +41,7 @@ export const irelandDescent: Path = {
       };
     }
 
-    const irishGGP = greatGrandparentsBornIn(profile, "IE");
+    const irishGGP = greatGrandparentsBornInStrict(profile, "IE");
     if (irishGGP.length > 0) {
       return {
         tier: "possibly",

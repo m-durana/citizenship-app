@@ -46,7 +46,7 @@ export const franceDescent: Path = {
         ],
         needToVerify: [
           "Article 30-3 of the Code civil: if neither you nor the transmitting French ancestor has actively exercised French status (passport renewal, consular registration, voting from abroad) for more than 50 years, a tribunal may declare loss of nationality. Verify possession d'etat with the Tribunal judiciaire de Paris before applying for a CNF.",
-          "The unbroken chain of citizenship between your French-born grandparent and you (each generation must have been French at the next child's birth).",
+          "The unbroken chain of citizenship between your French ancestor and you (each generation must have been French at the next child's birth).",
           maternalPre1973Verify,
         ],
       };

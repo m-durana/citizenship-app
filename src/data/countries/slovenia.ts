@@ -20,10 +20,18 @@ export const sloveniaDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "SI");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInSI = a.birthCountry === "SI";
+      const holdsSI = a.citizenshipsHeld?.includes("SI");
+      const description = bornInSI
+        ? "Slovenia-born ancestor"
+        : holdsSI
+          ? "ancestor who holds (or held) Slovenian citizenship"
+          : "ancestor linked to Slovenia";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Slovenia-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Article 12 reaches up to the fourth generation; Article 13/III provides a streamlined route for second-generation descendants active in expatriate societies.",
         ],
         needToVerify: [

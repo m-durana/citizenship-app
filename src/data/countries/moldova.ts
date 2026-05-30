@@ -20,10 +20,18 @@ export const moldovaTerritorialOrigin: Path = {
     const ggp = greatGrandparentsBornIn(p, "MD");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInMD = a.birthCountry === "MD";
+      const holdsMD = a.citizenshipsHeld?.includes("MD");
+      const description = bornInMD
+        ? "Moldova-born ancestor"
+        : holdsMD
+          ? "ancestor who holds (or held) Moldovan citizenship"
+          : "ancestor linked to Moldova / pre-1940 Bessarabia";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Moldova-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Recognition / recovery is available for descendants of pre-1940 Bessarabia residents and Moldovan SSR citizens.",
         ],
         needToVerify: [

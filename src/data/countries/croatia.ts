@@ -15,11 +15,17 @@ export const croatiaDescent: Path = {
   shortDescription:
     "Citizens of Croatian origin (descendants up to great-grandparents) can acquire Croatian citizenship under the Citizenship Act.",
   evaluate: (p) => {
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "HR") return `${role} born in Croatia`;
+      if (a.citizenshipsHeld?.includes("HR"))
+        return `${role} who holds (or held) Croatian citizenship`;
+      return `${role} of Croatian origin`;
+    };
     const par = parentsBornIn(p, "HR");
     if (par.length) {
       return {
         tier: "likely",
-        reasons: [`You have a parent born in Croatia (${par[0].key}).`],
+        reasons: [`You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`],
       };
     }
     const gp = grandparentsBornIn(p, "HR");
@@ -29,7 +35,7 @@ export const croatiaDescent: Path = {
       return {
         tier: "possibly",
         reasons: [
-          `You have an ancestor of Croatian origin born in Croatia (${closest.key}).`,
+          `You have an ${describe(closest.ancestor, "ancestor")} (${closest.key}).`,
         ],
         needToVerify: [
           "Your ancestor did not leave Croatia before 8 October 1991 and migrate to another former-Yugoslav state - that disqualifies the line.",
@@ -39,7 +45,7 @@ export const croatiaDescent: Path = {
     }
     return {
       tier: "unlikely",
-      reasons: ["No ancestor born in Croatia recorded."],
+      reasons: ["No ancestor linked to Croatia recorded."],
     };
   },
   requirementsSummary: [
@@ -93,10 +99,18 @@ export const croatiaArticle16: Path = {
     const ggp = greatGrandparentsBornIn(p, "HR");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInHR = a.birthCountry === "HR";
+      const holdsHR = a.citizenshipsHeld?.includes("HR");
+      const description = bornInHR
+        ? "Croatia-born ancestor"
+        : holdsHR
+          ? "ancestor who holds (or held) Croatian citizenship"
+          : "ancestor of Croatian origin";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Croatia-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Article 16 (post-2020) accepts ethnic-belonging declaration plus supporting public-document evidence; no language/culture test; renunciation of foreign nationality not required.",
         ],
         needToVerify: [
@@ -109,7 +123,7 @@ export const croatiaArticle16: Path = {
     return {
       tier: "unlikely",
       reasons: [
-        "No Croatia-born ancestor recorded and no ethnic-Croat indicator captured.",
+        "No ancestor linked to Croatia recorded and no ethnic-Croat indicator captured.",
         "Article 16 still allows ethnic-Croat applicants outside Croatia; if you self-identify as Croat, contact a Croatian consulate to discuss documentary support.",
       ],
     };

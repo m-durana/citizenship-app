@@ -18,11 +18,19 @@ export const ghanaDescent: Path = {
       typeof selfBirthYear === "number" ? selfBirthYear >= 1993 : undefined;
     if (par.length || gp.length) {
       const closest = par[0] ?? gp[0];
+      const a = closest.ancestor;
+      const bornInGH = a.birthCountry === "GH";
+      const holdsGH = a.citizenshipsHeld?.includes("GH");
+      const description = bornInGH
+        ? "Ghana-born ancestor"
+        : holdsGH
+          ? "ancestor who holds (or held) Ghanaian citizenship"
+          : "ancestor linked to Ghana";
       if (post1993 === false) {
         return {
           tier: "unlikely",
           reasons: [
-            `You have a Ghana-born ancestor (${closest.key}), but the modern descent rule applies to births on or after 7 January 1993.`,
+            `You have a ${description} (${closest.key}), but the modern descent rule applies to births on or after 7 January 1993.`,
             "Ghana separately offers a Right of Abode for African-descent diaspora (residence, not citizenship).",
           ],
         };
@@ -30,7 +38,7 @@ export const ghanaDescent: Path = {
       return {
         tier: "likely",
         reasons: [
-          `You have a Ghana-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Article 6 / Act 591 recognises grandparent-anchored descent for births on or after 7 January 1993.",
         ],
         needToVerify: [

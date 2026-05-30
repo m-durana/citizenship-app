@@ -1,5 +1,8 @@
 import type { Path } from "../../types/path";
-import { grandparentsBornIn, parentsBornIn } from "../../engine/helpers";
+import {
+  grandparentsBornInStrict,
+  parentsBornInStrict,
+} from "../../engine/helpers";
 
 export const venezuelaDescent: Path = {
   id: "ve-descent",
@@ -11,8 +14,8 @@ export const venezuelaDescent: Path = {
   shortDescription:
     "Article 32 of the Venezuelan Constitution recognises children born abroad to a Venezuelan parent and provides a residence-conditioned grandchild route. Consular access is constrained for many diaspora due to political conditions.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "VE");
-    const gp = grandparentsBornIn(p, "VE");
+    const par = parentsBornInStrict(p, "VE");
+    const gp = grandparentsBornInStrict(p, "VE");
     if (par.length) {
       return {
         tier: "possibly",

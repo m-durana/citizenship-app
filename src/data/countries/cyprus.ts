@@ -15,13 +15,19 @@ export const cyprusDescent: Path = {
   shortDescription:
     "Cyprus registers persons of Cypriot origin via Forms M121/M123/M126; the grandchild route requires the parent to have first registered as Cypriot. A discretionary Council of Ministers route exists for pre-1960 ancestor cases.",
   evaluate: (p) => {
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "CY") return `Cyprus-born ${role}`;
+      if (a.citizenshipsHeld?.includes("CY"))
+        return `${role} who holds (or held) Cypriot citizenship`;
+      return `${role} linked to Cyprus`;
+    };
     const par = parentsBornIn(p, "CY");
     const gp = grandparentsBornIn(p, "CY");
     const ancestors = ancestorsBornIn(p, "CY");
     if (par.length) {
       return {
         tier: "likely",
-        reasons: [`You have a Cyprus-born parent (${par[0].key}).`],
+        reasons: [`You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`],
         needToVerify: [
           "Your parent was a Cypriot citizen at the time of your birth.",
         ],
@@ -31,7 +37,7 @@ export const cyprusDescent: Path = {
       return {
         tier: "possibly",
         reasons: [
-          `You have a Cyprus-born grandparent (${gp[0].key}).`,
+          `You have a ${describe(gp[0].ancestor, "grandparent")} (${gp[0].key}).`,
           "Citizenship passes one generation at a time: your parent must first register as Cypriot before you can register.",
         ],
         needToVerify: [
@@ -44,7 +50,7 @@ export const cyprusDescent: Path = {
       return {
         tier: "possibly",
         reasons: [
-          `You have a Cyprus-born ancestor (${ancestors[0].key}) further back than grandparent.`,
+          `You have a ${describe(ancestors[0].ancestor, "ancestor")} (${ancestors[0].key}) further back than grandparent.`,
           "The discretionary Council of Ministers route may reach pre-1960 Ottoman/British Cyprus ancestors but is rarely granted on routine evidence.",
         ],
         needToVerify: [

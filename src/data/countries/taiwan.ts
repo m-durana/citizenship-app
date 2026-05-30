@@ -13,10 +13,18 @@ export const taiwanNWOHR: Path = {
   evaluate: (p) => {
     const par = parentsBornIn(p, "TW");
     if (par.length) {
+      const parent = par[0].ancestor;
+      const bornInTW = parent.birthCountry === "TW";
+      const holdsTW = parent.citizenshipsHeld?.includes("TW");
+      const description = bornInTW
+        ? "Taiwan-born parent"
+        : holdsTW
+          ? "parent who holds (or held) ROC (Taiwan) nationality"
+          : "parent linked to Taiwan";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Taiwan-born parent (${par[0].key}).`,
+          `You have a ${description} (${par[0].key}).`,
           "Step 1: confirm ROC nationality (NWOHR status: ROC passport without household registration).",
           "Step 2: full household registration typically requires periods of legal residence in Taiwan (commonly 1 year continuous, or 270 days/year for two consecutive years).",
         ],

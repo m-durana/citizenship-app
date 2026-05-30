@@ -11,13 +11,19 @@ export const nigeriaSection26: Path = {
   shortDescription:
     "Section 26(2)(a) of Nigeria's 1999 Constitution provides a registration route for adults born outside Nigeria with at least one Nigerian grandparent. Registered (vs. by-birth) Nigerians must renounce other nationalities, and good character plus intent to domicile in Nigeria are required.",
   evaluate: (p) => {
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "NG") return `Nigeria-born ${role}`;
+      if (a.citizenshipsHeld?.includes("NG"))
+        return `${role} who holds (or held) Nigerian citizenship`;
+      return `${role} linked to Nigeria`;
+    };
     const par = parentsBornIn(p, "NG");
     const gp = grandparentsBornIn(p, "NG");
     if (par.length) {
       return {
         tier: "likely",
         reasons: [
-          `You have a Nigeria-born parent (${par[0].key}).`,
+          `You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`,
           "Section 25(1)(c) recognises persons born outside Nigeria as citizens by birth where either parent is a Nigerian citizen.",
         ],
       };
@@ -26,7 +32,7 @@ export const nigeriaSection26: Path = {
       return {
         tier: "possibly",
         reasons: [
-          `You have a Nigeria-born grandparent (${gp[0].key}).`,
+          `You have a ${describe(gp[0].ancestor, "grandparent")} (${gp[0].key}).`,
           "Section 26(2)(a) registration is open to adults born outside Nigeria whose grandparent is a Nigerian citizen.",
         ],
         needToVerify: [

@@ -11,12 +11,18 @@ export const spainDescent: Path = {
   shortDescription:
     "Children of Spanish citizens are Spanish by origin regardless of where they were born. Grandchildren may qualify when their parent acquired Spanish nationality first.",
   evaluate: (p) => {
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "ES") return `Spanish-born ${role}`;
+      if (a.citizenshipsHeld?.includes("ES"))
+        return `${role} who holds (or held) Spanish citizenship`;
+      return `${role} linked to Spain`;
+    };
     const par = parentsBornIn(p, "ES");
     if (par.length) {
       return {
         tier: "likely",
         reasons: [
-          `You have a Spanish-born parent (${par[0].key}).`,
+          `You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`,
           "Spain transmits citizenship by origin to all children of Spanish citizens.",
         ],
         needToVerify: [
@@ -28,7 +34,9 @@ export const spainDescent: Path = {
     if (gp.length) {
       return {
         tier: "possibly",
-        reasons: [`You have a Spanish-born grandparent (${gp[0].key}).`],
+        reasons: [
+          `You have a ${describe(gp[0].ancestor, "grandparent")} (${gp[0].key}).`,
+        ],
         needToVerify: [
           "Your parent must first acquire / have acquired Spanish nationality through this line.",
           "If your grandparent's exile during the Civil War / Franco era is documented, the Democratic Memory Law (Ley de Memoria Democrática) provides a direct path - see the Spanish exile descendants result.",

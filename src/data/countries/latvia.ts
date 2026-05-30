@@ -20,9 +20,17 @@ export const latviaDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "LV");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInLV = a.birthCountry === "LV";
+      const holdsLV = a.citizenshipsHeld?.includes("LV");
+      const description = bornInLV
+        ? "Latvia-born ancestor"
+        : holdsLV
+          ? "ancestor who holds (or held) Latvian citizenship"
+          : "ancestor linked to Latvia";
       return {
         tier: "possibly",
-        reasons: [`You have a Latvia-born ancestor (${closest.key}).`],
+        reasons: [`You have a ${description} (${closest.key}).`],
         needToVerify: [
           "Your ancestor was a Latvian citizen on or before 17 June 1940.",
           "They left Latvia between 17 Jun 1940 and 4 May 1990 escaping occupation, and did not voluntarily return to Soviet rule.",

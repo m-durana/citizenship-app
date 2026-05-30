@@ -20,10 +20,18 @@ export const hungaryDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "HU");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInHU = a.birthCountry === "HU";
+      const holdsHU = a.citizenshipsHeld?.includes("HU");
+      const description = bornInHU
+        ? "Hungary-born ancestor"
+        : holdsHU
+          ? "ancestor who holds (or held) Hungarian citizenship"
+          : "ancestor linked to Hungary (historical or by descent)";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Hungary-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "There is no generational limit if Hungarian citizenship can be traced.",
         ],
         needToVerify: [

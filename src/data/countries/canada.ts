@@ -24,11 +24,19 @@ export const canadaBillC3: Path = {
 
     if (par.length || gp.length || ancestors.length) {
       const closest = par[0] ?? gp[0] ?? ancestors[0];
+      const a = closest.ancestor;
+      const bornInCA = a.birthCountry === "CA";
+      const holdsCA = a.citizenshipsHeld?.includes("CA");
+      const description = bornInCA
+        ? "Canada-born ancestor"
+        : holdsCA
+          ? "ancestor who holds (or held) Canadian citizenship"
+          : "ancestor linked to Canada";
       if (preCutoff === true) {
         return {
           tier: "likely",
           reasons: [
-            `You have a Canada-born ancestor (${closest.key}) and you were born before 15 December 2025.`,
+            `You have a ${description} (${closest.key}) and you were born before 15 December 2025.`,
             "Bill C-3 grants automatic recognition to pre-cutoff descendants where a Canadian-citizen parent existed at the time of birth/adoption.",
           ],
           needToVerify: [
@@ -40,7 +48,7 @@ export const canadaBillC3: Path = {
       return {
         tier: "possibly",
         reasons: [
-          `You have a Canada-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Pre-15-Dec-2025 cohort: automatic recognition where a Canadian-citizen parent existed at birth.",
           "Post-15-Dec-2025 cohort: requires the Canadian parent to show 1,095 days' cumulative physical presence in Canada before the child's birth/adoption.",
         ],

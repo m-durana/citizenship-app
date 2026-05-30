@@ -1,8 +1,8 @@
 import type { Path } from "../../types/path";
 import {
-  ancestorsBornIn,
-  grandparentsBornIn,
-  parentsBornIn,
+  ancestorsBornInStrict,
+  grandparentsBornInStrict,
+  parentsBornInStrict,
 } from "../../engine/helpers";
 
 export const eastTimorDescent: Path = {
@@ -15,9 +15,9 @@ export const eastTimorDescent: Path = {
   shortDescription:
     "Article 3 of the Timor-Leste Constitution and Section 1 of the 2002 Citizenship Law confer original citizenship on children of a father or mother born in East Timor. Grandparent reach is not automatic - the intermediate parent must have established Timorese citizenship before the applicant's birth. Dual citizenship is permitted.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "TL");
-    const gp = grandparentsBornIn(p, "TL");
-    const anyTl = ancestorsBornIn(p, "TL");
+    const par = parentsBornInStrict(p, "TL");
+    const gp = grandparentsBornInStrict(p, "TL");
+    const anyTl = ancestorsBornInStrict(p, "TL");
     if (par.length) {
       return {
         tier: "likely",

@@ -15,11 +15,19 @@ export const greeceDescent: Path = {
   shortDescription:
     "Greek citizenship is recognized through a determination procedure for descendants of Greek nationals. Eligibility commonly extends to grandchildren and great-grandchildren if the citizenship line was preserved.",
   evaluate: (p) => {
+    const describe = (a: { birthCountry?: string; citizenshipsHeld?: string[] }, role: string) => {
+      if (a.birthCountry === "GR") return `Greek-born ${role}`;
+      if (a.citizenshipsHeld?.includes("GR"))
+        return `${role} who holds (or held) Greek citizenship`;
+      return `${role} linked to Greece`;
+    };
     const par = parentsBornIn(p, "GR");
     if (par.length) {
       return {
         tier: "likely",
-        reasons: [`You have a Greek-born parent (${par[0].key}).`],
+        reasons: [
+          `You have a ${describe(par[0].ancestor, "parent")} (${par[0].key}).`,
+        ],
       };
     }
     const gp = grandparentsBornIn(p, "GR");
@@ -27,7 +35,7 @@ export const greeceDescent: Path = {
       return {
         tier: "likely",
         reasons: [
-          `You have a Greek-born grandparent (${gp[0].key}).`,
+          `You have a ${describe(gp[0].ancestor, "grandparent")} (${gp[0].key}).`,
           "Determination procedure recognizes descent through grandparents.",
         ],
       };
@@ -36,7 +44,9 @@ export const greeceDescent: Path = {
     if (ggp.length) {
       return {
         tier: "possibly",
-        reasons: [`You have a Greek-born great-grandparent (${ggp[0].key}).`],
+        reasons: [
+          `You have a ${describe(ggp[0].ancestor, "great-grandparent")} (${ggp[0].key}).`,
+        ],
         needToVerify: [
           "Each intermediate ancestor was registered with Greek authorities (mother- or father-line, depending on era).",
           "Pre-1984 paternal-line bias means maternal-line claims through that period need closer review.",

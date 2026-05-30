@@ -1,8 +1,8 @@
 import type { Path } from "../../types/path";
 import {
-  grandparentsBornIn,
-  greatGrandparentsBornIn,
-  parentsBornIn,
+  grandparentsBornInStrict,
+  greatGrandparentsBornInStrict,
+  parentsBornInStrict,
 } from "../../engine/helpers";
 
 export const capeVerdeDescent: Path = {
@@ -15,9 +15,9 @@ export const capeVerdeDescent: Path = {
   shortDescription:
     "The 2018 Cape Verde Nationality Law (with 2023 diaspora-expansion amendment) lets children, grandchildren, great-grandchildren, and great-great-grandchildren of Cape Verdean nationals of origin claim nationality of origin by declaration.",
   evaluate: (p) => {
-    const par = parentsBornIn(p, "CV");
-    const gp = grandparentsBornIn(p, "CV");
-    const ggp = greatGrandparentsBornIn(p, "CV");
+    const par = parentsBornInStrict(p, "CV");
+    const gp = grandparentsBornInStrict(p, "CV");
+    const ggp = greatGrandparentsBornInStrict(p, "CV");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
       return {

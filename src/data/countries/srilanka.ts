@@ -20,10 +20,18 @@ export const sriLankaDescent: Path = {
     const ggp = greatGrandparentsBornIn(p, "LK");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInLK = a.birthCountry === "LK";
+      const holdsLK = a.citizenshipsHeld?.includes("LK");
+      const description = bornInLK
+        ? "Sri Lanka-born ancestor"
+        : holdsLK
+          ? "ancestor who holds (or held) Sri Lankan citizenship"
+          : "ancestor linked to Sri Lanka";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Sri Lanka-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Descent runs through father, paternal grandfather, or paternal great-grandfather; post-2003 amendments recognise maternal transmission for later births.",
         ],
         needToVerify: [

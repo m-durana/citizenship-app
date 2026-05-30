@@ -20,10 +20,18 @@ export const ukraineArticle8: Path = {
     const ggp = greatGrandparentsBornIn(p, "UA");
     if (par.length || gp.length || ggp.length) {
       const closest = par[0] ?? gp[0] ?? ggp[0];
+      const a = closest.ancestor;
+      const bornInUA = a.birthCountry === "UA";
+      const holdsUA = a.citizenshipsHeld?.includes("UA");
+      const description = bornInUA
+        ? "Ukraine-born ancestor"
+        : holdsUA
+          ? "ancestor who holds (or held) Ukrainian citizenship"
+          : "ancestor linked to present-day Ukrainian territory";
       return {
         tier: "possibly",
         reasons: [
-          `You have a Ukraine-born ancestor (${closest.key}).`,
+          `You have a ${description} (${closest.key}).`,
           "Article 8 reaches up to great-grandparents and through siblings / children / grandchildren.",
         ],
         needToVerify: [

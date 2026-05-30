@@ -26,7 +26,7 @@ export const lebanonLaw41Closed: Path = {
       tier: "unlikely",
       reasons: [
         "Law 41/2015 CLOSED 25 November 2025.",
-        "No Lebanon-born ancestor recorded.",
+        "No ancestor linked to Lebanon recorded.",
       ],
     };
   },

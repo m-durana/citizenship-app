@@ -58,7 +58,7 @@ export const switzerlandDescent: Path = {
     }
     return {
       tier: "unlikely",
-      reasons: ["No Swiss-citizen parent or Swiss-born ancestor recorded."],
+      reasons: ["No Swiss-citizen parent or ancestor linked to Switzerland recorded."],
     };
   },
   requirementsSummary: [
