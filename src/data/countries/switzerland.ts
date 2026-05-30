@@ -24,7 +24,7 @@ export const switzerlandDescent: Path = {
           "Children of a Swiss-citizen parent acquire Swiss citizenship at birth.",
         ],
         needToVerify: [
-          "Your parent was a Swiss citizen at the time of your birth (not just born in Switzerland — Switzerland has no jus soli).",
+          "Your parent was a Swiss citizen at the time of your birth. Being born in Switzerland is not enough; Switzerland has no jus soli.",
           "If you were born abroad, you were registered with a Swiss representation before age 25 to retain Swiss citizenship.",
         ],
       };
@@ -72,7 +72,7 @@ export const switzerlandDescent: Path = {
     "Evidence of timely registration with a Swiss representation for each generation born abroad",
   ],
   caveats: [
-    "Switzerland does NOT grant citizenship by birth in Switzerland — only by parentage.",
+    "Switzerland does NOT grant citizenship by birth in Switzerland, only by parentage.",
     "Missing the age-25 (or pre-2018 age-22) registration deadline closes the route for that person AND their descendants.",
     "Reinstatement of lost Swiss citizenship is possible but discretionary and time-limited (typically within 10 years of loss).",
   ],

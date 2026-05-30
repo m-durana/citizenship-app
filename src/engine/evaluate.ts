@@ -16,9 +16,15 @@ function isMinorApplicant(profile: UserProfile): boolean {
 export function evaluateProfile(profile: UserProfile): EvaluatedPath[] {
   const minor = isMinorApplicant(profile);
   const minorNote =
-    "As a minor applicant, the application must be filed by a parent or legal guardian. Some countries grant citizenship automatically when the parent's status is recognized — confirm the specific procedure with the relevant consulate.";
+    "As a minor applicant, the application must be filed by a parent or legal guardian. Some countries grant citizenship automatically when the parent's status is recognized, confirm the specific procedure with the relevant consulate.";
 
-  const evaluated = allPaths.map<EvaluatedPath>((p: Path) => {
+  const alreadyHeld = new Set(
+    (profile.self.currentCitizenships ?? []).map((c) => c.toUpperCase()),
+  );
+
+  const evaluated = allPaths
+    .filter((p) => !alreadyHeld.has(p.countryCode.toUpperCase()))
+    .map<EvaluatedPath>((p: Path) => {
     const match = p.evaluate(profile);
     if (minor && match.tier !== "unlikely") {
       const existing = match.needToVerify ?? [];

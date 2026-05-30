@@ -21,9 +21,19 @@ type Props = SingleProps | MultiProps;
 
 export function CountrySelect(props: Props) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+    } else if (mounted) {
+      const t = setTimeout(() => setMounted(false), 150);
+      return () => clearTimeout(t);
+    }
+  }, [open, mounted]);
 
   useEffect(() => {
     if (!open) return;
@@ -130,8 +140,13 @@ export function CountrySelect(props: Props) {
         <span className="text-muted shrink-0">▾</span>
       </button>
 
-      {open && (
-        <div className="absolute z-20 mt-1 w-full bg-panel border border-border shadow-lg max-h-72 overflow-hidden flex flex-col">
+      {mounted && (
+        <div
+          className={`absolute z-20 mt-1 w-full bg-panel border border-border shadow-lg max-h-72 overflow-hidden flex flex-col transition-all duration-150 ease-out ${
+            open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-1 scale-[0.98] pointer-events-none"
+          }`}
+          style={{ transformOrigin: "top" }}
+        >
           <input
             ref={inputRef}
             type="text"
@@ -139,6 +154,7 @@ export function CountrySelect(props: Props) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
             className="w-full bg-bg border-b border-border px-3 py-2 text-sm outline-none"
+            style={{ fontSize: "16px" }}
           />
           <div className="overflow-y-auto flex-1">
             {filtered.length === 0 && (

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type {
   Ancestor,
   AncestorKey,
@@ -64,6 +65,18 @@ function nextInLineLabel(key: AncestorKey): string {
 
 export function AncestorCard({ profile, setProfile, keyName }: Props) {
   const a: Ancestor = profile.ancestors[keyName] ?? {};
+  const [hintOpen, setHintOpen] = useState(false);
+  const hintWrapRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!hintOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (hintWrapRef.current && !hintWrapRef.current.contains(e.target as Node)) {
+        setHintOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [hintOpen]);
 
   const update = (patch: Partial<Ancestor>) => {
     setProfile({
@@ -80,12 +93,25 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
       <div className="flex items-center justify-between">
         <h3 className="font-medium flex items-center gap-1.5">
           {ANCESTOR_LABELS[keyName]}
-          <span
-            className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-border text-muted text-[10px] cursor-help select-none"
-            title={lineageTooltip(keyName)}
-            aria-label={lineageTooltip(keyName)}
-          >
-            ?
+          <span ref={hintWrapRef} className="relative inline-flex">
+            <button
+              type="button"
+              onClick={() => setHintOpen((v) => !v)}
+              className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-border text-muted text-[10px] select-none cursor-pointer"
+              title={lineageTooltip(keyName)}
+              aria-label={lineageTooltip(keyName)}
+              aria-expanded={hintOpen}
+            >
+              ?
+            </button>
+            <span
+              className={`absolute left-0 top-full mt-1 z-10 bg-panel border border-border px-2 py-1 text-xs text-ink whitespace-nowrap shadow-md transition-all duration-150 origin-top-left ${
+                hintOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+              }`}
+              role="tooltip"
+            >
+              {lineageTooltip(keyName)}
+            </span>
           </span>
         </h3>
         {a.birthCountry && (
@@ -110,7 +136,7 @@ export function AncestorCard({ profile, setProfile, keyName }: Props) {
 
         <label className="block text-sm sm:col-span-2">
           <span className="text-muted">
-            Citizenships they held (only fill in if different from country of birth — e.g. naturalized elsewhere, or inherited a citizenship by descent)
+            Citizenships they held (only fill in if different from country of birth, e.g. naturalized elsewhere, or inherited a citizenship by descent)
           </span>
           <CountrySelect
             mode="multi"

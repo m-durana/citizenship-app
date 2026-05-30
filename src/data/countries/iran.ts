@@ -11,7 +11,7 @@ export const iranDescent: Path = {
   countryCode: "IR",
   flag: "🇮🇷",
   pathType: "descent",
-  // sourceRefreshPending: 2026-05-15 — A2 explicitly flagged that Iran requires a Persian-primary source refresh before shipping.
+  // sourceRefreshPending: 2026-05-15, A2 explicitly flagged that Iran requires a Persian-primary source refresh before shipping.
   name: "Iranian citizenship by descent (Civil Code Arts. 976–991)",
   shortDescription:
     "Article 976(2) of the Iranian Civil Code confers Iranian nationality automatically and indefinitely on the child of an Iranian father. The 2019 maternal amendment (ratified 2020) allows children of an Iranian mother and a foreign father to APPLY for Iranian nationality, subject to security clearance. Dual citizenship is not recognized in practice: inside Iran, dual nationals are treated as Iranian only. Iran has no consulate in the United States; the Iranian Interests Section of the Pakistan Embassy in Washington handles consular matters.",

@@ -62,11 +62,11 @@ export type Ancestor = {
   };
   // Citizenships the ancestor is known to have HELD (in addition to or instead
   // of birth country). Lets us model cases where citizenship was acquired by
-  // descent or naturalization independent of birthplace — e.g. a parent born
+  // descent or naturalization independent of birthplace, e.g. a parent born
   // in Argentina who is a Swiss citizen because their own father was Swiss.
   citizenshipsHeld?: string[];
   // Ordered citizenship history for the Mitteleuropa restoration corridor.
-  // Optional and progressive — only ask in the UI when the engine detects a
+  // Optional and progressive, only ask in the UI when the engine detects a
   // multi-state birthplace (Austria-Hungary, Czechoslovakia, USSR, etc.).
   citizenshipTimeline?: Array<{
     countryCode: string;
@@ -87,7 +87,7 @@ export type Ancestor = {
   // Per-ancestor persecution status, used by the German §15 StAG / Art. 116(2)
   // and Austrian §58c restoration paths. The eligibility hinges on the
   // ancestor's status DURING 1933–1945, not on the descendant's current
-  // self-identification — so the per-ancestor record is the precise signal,
+  // self-identification, so the per-ancestor record is the precise signal,
   // while the existing profile-level heritage.naziPersecutionDescendant flag
   // remains a coarse routing hint.
   persecutionStatus?: {

@@ -29,7 +29,7 @@ export function ancestorLinkedTo(a: Ancestor, countryCode: string): boolean {
 // ancestor who selected `historicalState: "USSR"` plausibly belongs to any of
 // these regimes' restoration paths; the relevant country evaluator decides
 // whether the specific person/dates qualify. This is intentionally inclusive
-// (lots of false positives are fine — the evaluator surfaces a needToVerify).
+// (lots of false positives are fine, the evaluator surfaces a needToVerify).
 const SUCCESSOR_STATES: Record<string, string[]> = {
   USSR: ["RU", "UA", "BY", "LT", "LV", "EE", "MD", "AM", "AZ", "GE", "KZ", "KG", "TJ", "TM", "UZ"],
   Yugoslavia: ["RS", "HR", "SI", "BA", "ME", "MK", "XK"],
