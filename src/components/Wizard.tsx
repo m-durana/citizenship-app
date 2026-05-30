@@ -65,11 +65,21 @@ export function Wizard({ profile, setProfile, onSubmit }: Props) {
           />
         )}
         {step === 3 && (
-          <AncestorGrid
-            profile={profile}
-            setProfile={setProfile}
-            keys={[...GREAT_GRANDPARENT_KEYS]}
-          />
+          <details className="group border border-border bg-panel/60 p-4">
+            <summary className="cursor-pointer select-none text-sm leading-relaxed text-ink/85 list-none flex items-start gap-3">
+              <span className="text-muted shrink-0 transition-transform group-open:rotate-90">▸</span>
+              <span>
+                <strong className="text-ink font-medium">Open this if</strong> you have ancestors from Italy, Ireland, Poland, Lithuania, Hungary, Romania, Latvia, Spain (Sephardic), Germany or Austria (Nazi-era), Israel, or Ecuador. Most other paths stop at the grandparent level, so you can skip this section and go straight to the next step.
+              </span>
+            </summary>
+            <div className="mt-5">
+              <AncestorGrid
+                profile={profile}
+                setProfile={setProfile}
+                keys={[...GREAT_GRANDPARENT_KEYS]}
+              />
+            </div>
+          </details>
         )}
         {step === 4 && (
           <HeritageStep profile={profile} setProfile={setProfile} />
